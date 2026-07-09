@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Task Manager" %}{% endblock %}
+
+{% block content %}
+<div class="jumbotron bg-light p-5 rounded">
+    <h1 class="display-4">{% trans "Welcome to Task Manager" %}</h1>
+    <p class="lead">{% trans "A simple and convenient task management system." %}</p>
+    <hr class="my-4">
+    <p>{% trans "Get started by registering or logging in to your account." %}</p>
+    <a class="btn btn-primary btn-lg" href="#" role="button">{% trans "Register" %}</a>
+    <a class="btn btn-secondary btn-lg" href="#" role="button">{% trans "Login" %}</a>
+</div>
+{% endblock %}
