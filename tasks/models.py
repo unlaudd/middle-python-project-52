@@ -15,7 +15,7 @@ class Task(models.Model):
     status = models.ForeignKey('statuses.Status', on_delete=models.PROTECT, verbose_name=_('Status'))
     author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='authored_tasks', verbose_name=_('Author'))
     assignee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_tasks', verbose_name=_('Assignee'))
-    labels = models.ManyToManyField(Label, blank=True, verbose_name=_('Labels'))
+    labels = models.ManyToManyField('labels.Label', blank=True, verbose_name=_('Labels'))
     created_at = models.DateTimeField(_('Created at'), auto_now_add=True)
 
     def __str__(self):
