@@ -1,3 +1,6 @@
-from django.db import models
+"""
+Models for the users application.
 
-# Create your models here.
+This application uses the built-in Django User model
+(django.contrib.auth.models.User), so no custom models are defined here.
+"""

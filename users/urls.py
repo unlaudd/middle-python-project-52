@@ -1,11 +1,13 @@
+"""
+URL configuration for the users application.
+"""
 from django.urls import path
+
 from .views import (
-    UserListView,
     UserCreateView,
-    UserUpdateView,
     UserDeleteView,
-    CustomLoginView,
-    CustomLogoutView
+    UserListView,
+    UserUpdateView,
 )
 
 urlpatterns = [

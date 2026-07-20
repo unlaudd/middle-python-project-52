@@ -1,5 +1,15 @@
+"""
+URL configuration for the tasks application.
+"""
 from django.urls import path
-from .views import TaskListView, TaskCreateView, TaskUpdateView, TaskDeleteView, TaskDetailView
+
+from .views import (
+    TaskCreateView,
+    TaskDeleteView,
+    TaskDetailView,
+    TaskListView,
+    TaskUpdateView,
+)
 
 urlpatterns = [
     path('', TaskListView.as_view(), name='tasks_list'),

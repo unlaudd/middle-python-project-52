@@ -1,0 +1,3 @@
+"""
+Users application configuration package.
+"""

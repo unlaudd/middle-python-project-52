@@ -1,0 +1,3 @@
+"""
+Statuses application configuration package.
+"""

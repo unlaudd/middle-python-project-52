@@ -1,10 +1,16 @@
+"""
+Forms for user registration, authentication, and profile updates.
+"""
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
 
 class UserRegistrationForm(UserCreationForm):
+    """
+    Form for registering a new user with first name, last name, and username.
+    """
     first_name = forms.CharField(
         label=_('First name'),
         max_length=30,
@@ -37,6 +43,9 @@ class UserRegistrationForm(UserCreationForm):
         fields = ('first_name', 'last_name', 'username', 'password1', 'password2')
 
     def save(self, commit=True):
+        """
+        Save the user with first name and last name from the form data.
+        """
         user = super().save(commit=False)
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
@@ -46,6 +55,9 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class UserUpdateForm(forms.ModelForm):
+    """
+    Form for updating user profile information.
+    """
     first_name = forms.CharField(
         label=_('First name'),
         max_length=30,
@@ -68,6 +80,9 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class LoginForm(AuthenticationForm):
+    """
+    Form for user authentication.
+    """
     username = forms.CharField(
         label=_('Username'),
         max_length=150,
