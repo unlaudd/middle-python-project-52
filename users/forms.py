@@ -13,45 +13,26 @@ class UserRegistrationForm(UserCreationForm):
     """
     first_name = forms.CharField(
         label=_('Имя'),
-        max_length=30,
+        max_length=150,
         required=True
     )
     last_name = forms.CharField(
         label=_('Фамилия'),
-        max_length=30,
-        required=True
-    )
-    username = forms.CharField(
-        label=_('Имя пользователя'),
         max_length=150,
         required=True
     )
-    password1 = forms.CharField(
-        label=_('Пароль'),
-        widget=forms.PasswordInput,
-        required=True
-    )
-    password2 = forms.CharField(
-        label=_('Подтверждение пароля'),
-        widget=forms.PasswordInput,
-        required=True,
-        help_text=_('Введите тот же пароль, что и ранее, для проверки.')
-    )
 
-    class Meta:
+    class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('first_name', 'last_name', 'username', 'password1', 'password2')
+        fields = ('first_name', 'last_name', 'username')
 
-    def save(self, commit=True):
-        """
-        Save the user with first name and last name from the form data.
-        """
-        user = super().save(commit=False)
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-        if commit:
-            user.save()
-        return user
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Переопределяем метки после инициализации, чтобы не сломать встроенную валидацию UserCreationForm
+        self.fields['username'].label = _('Имя пользователя')
+        self.fields['password1'].label = _('Пароль')
+        self.fields['password2'].label = _('Подтверждение пароля')
+        self.fields['password2'].help_text = _('Введите тот же пароль, что и ранее, для проверки.')
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -60,16 +41,11 @@ class UserUpdateForm(forms.ModelForm):
     """
     first_name = forms.CharField(
         label=_('Имя'),
-        max_length=30,
+        max_length=150,
         required=True
     )
     last_name = forms.CharField(
         label=_('Фамилия'),
-        max_length=30,
-        required=True
-    )
-    username = forms.CharField(
-        label=_('Имя пользователя'),
         max_length=150,
         required=True
     )
@@ -78,18 +54,16 @@ class UserUpdateForm(forms.ModelForm):
         model = User
         fields = ('first_name', 'last_name', 'username')
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = _('Имя пользователя')
+
 
 class LoginForm(AuthenticationForm):
     """
     Form for user authentication.
     """
-    username = forms.CharField(
-        label=_('Имя пользователя'),
-        max_length=150,
-        required=True
-    )
-    password = forms.CharField(
-        label=_('Пароль'),
-        widget=forms.PasswordInput,
-        required=True
-    )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = _('Имя пользователя')
+        self.fields['password'].label = _('Пароль')
