@@ -1,7 +1,6 @@
 """
 Views for user management, authentication, and profile operations.
 """
-import sys
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
@@ -17,27 +16,29 @@ from .forms import LoginForm, UserRegistrationForm, UserUpdateForm
 
 
 class UserListView(ListView):
+    """
+    View for displaying a list of all users.
+    """
     model = User
     template_name = 'users/list.html'
     context_object_name = 'users'
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
+    """
+    View for registering a new user.
+    """
     model = User
     form_class = UserRegistrationForm
     template_name = 'users/create.html'
     success_url = reverse_lazy('login')
     success_message = _('Пользователь успешно зарегистрирован')
 
-    def form_invalid(self, form):
-        # Принудительный вывод ошибок валидации в лог Docker (stderr с flush)
-        print("=== FORM VALIDATION ERRORS ===", flush=True, file=sys.stderr)
-        print(form.errors, flush=True, file=sys.stderr)
-        print("==============================", flush=True, file=sys.stderr)
-        return super().form_invalid(form)
-
 
 class CustomLoginView(SuccessMessageMixin, LoginView):
+    """
+    View for user authentication.
+    """
     form_class = LoginForm
     template_name = 'users/login.html'
     success_message = _('Вы вошли в систему')
@@ -47,6 +48,9 @@ class CustomLoginView(SuccessMessageMixin, LoginView):
 
 
 class CustomLogoutView(LogoutView):
+    """
+    View for user logout.
+    """
     next_page = reverse_lazy('home')
 
     def dispatch(self, request, *args, **kwargs):
@@ -55,6 +59,9 @@ class CustomLogoutView(LogoutView):
 
 
 class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    """
+    View for updating a user's profile.
+    """
     model = User
     form_class = UserUpdateForm
     template_name = 'users/update.html'
@@ -72,6 +79,9 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
 
 
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """
+    View for deleting a user account.
+    """
     model = User
     template_name = 'users/delete.html'
     success_url = reverse_lazy('users_list')
