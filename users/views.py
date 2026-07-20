@@ -16,23 +16,24 @@ from .forms import LoginForm, UserRegistrationForm, UserUpdateForm
 
 
 class UserListView(ListView):
-    """
-    View for displaying a list of all users.
-    """
     model = User
     template_name = 'users/list.html'
     context_object_name = 'users'
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
-    """
-    View for registering a new user.
-    """
     model = User
     form_class = UserRegistrationForm
     template_name = 'users/create.html'
     success_url = reverse_lazy('login')
     success_message = _('Пользователь успешно зарегистрирован')
+
+    def form_invalid(self, form):
+        # ЭТОТ ВЫВОД ПОЯВИТСЯ В ЛОГАХ app-1 И ПОКАЖЕТ ТОЧНУЮ ПРИЧИНУ ОШИБКИ
+        print("=== FORM VALIDATION ERRORS ===")
+        print(form.errors)
+        print("==============================")
+        return super().form_invalid(form)
 
 
 class CustomLoginView(SuccessMessageMixin, LoginView):
