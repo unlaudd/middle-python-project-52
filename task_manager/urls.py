@@ -25,4 +25,5 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
+    path('statuses/', include('statuses.urls')),
 ]

@@ -118,3 +118,30 @@ msgstr "Пользователь успешно удален"
 
 msgid "You do not have permission to change this user."
 msgstr "У вас нет прав для изменения"
+
+msgid "Statuses"
+msgstr "Статусы"
+
+msgid "Create status"
+msgstr "Создать статус"
+
+msgid "Create"
+msgstr "Создать"
+
+msgid "Edit status"
+msgstr "Изменение статуса"
+
+msgid "Delete status"
+msgstr "Удаление статуса"
+
+msgid "Status successfully created"
+msgstr "Статус успешно создан"
+
+msgid "Status successfully updated"
+msgstr "Статус успешно изменен"
+
+msgid "Status successfully deleted"
+msgstr "Статус успешно удален"
+
+msgid "Unable to delete status"
+msgstr "Невозможно удалить статус"

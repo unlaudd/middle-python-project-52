@@ -19,6 +19,9 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'statuses_list' %}">{% trans "Statuses" %}</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'users_list' %}">{% trans "Users" %}</a>
                     </li>
                     {% if user.is_authenticated %}
