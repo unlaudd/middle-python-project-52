@@ -3,16 +3,16 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center my-4">
-    <h1>{% trans "Statuses" %}</h1>
-    <a href="{% url 'statuses_create' %}" class="btn btn-primary">{% trans "Create status" %}</a>
+    <h1>{% trans "Статусы" %}</h1>
+    <a href="{% url 'statuses_create' %}" class="btn btn-primary">{% trans "Создать статус" %}</a>
 </div>
 
 <table class="table table-striped">
     <thead>
         <tr>
             <th>ID</th>
-            <th>{% trans "Name" %}</th>
-            <th>{% trans "Created" %}</th>
+            <th>{% trans "Имя" %}</th>
+            <th>{% trans "Дата создания" %}</th>
             <th></th>
         </tr>
     </thead>
@@ -23,9 +23,9 @@
             <td>{{ status.name }}</td>
             <td>{{ status.created_at|date:"d.m.Y H:i" }}</td>
             <td>
-                <a href="{% url 'statuses_update' status.id %}">{% trans "Edit" %}</a>
+                <a href="{% url 'statuses_update' status.id %}">{% trans "Изменить" %}</a>
                 <br>
-                <a href="{% url 'statuses_delete' status.id %}">{% trans "Delete" %}</a>
+                <a href="{% url 'statuses_delete' status.id %}">{% trans "Удалить" %}</a>
             </td>
         </tr>
         {% endfor %}

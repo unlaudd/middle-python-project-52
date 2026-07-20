@@ -2,10 +2,10 @@
 {% load i18n %}
 
 {% block content %}
-<h1 class="my-4">{% trans "Delete user" %}</h1>
-<p>{% trans "Are you sure you want to delete" %} {{ object.username }}?</p>
+<h1 class="my-4">{% trans "Удаление пользователя" %}</h1>
+<p>{% trans "Вы уверены, что хотите удалить" %} {{ object.username }}?</p>
 <form method="post">
     {% csrf_token %}
-    <button type="submit" class="btn btn-danger">{% trans "Yes, delete" %}</button>
+    <button type="submit" class="btn btn-danger">{% trans "Да, удалить" %}</button>
 </form>
 {% endblock %}

@@ -4,11 +4,10 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center my-4">
-    <h1>{% trans "Tasks" %}</h1>
-    <a href="{% url 'tasks_create' %}" class="btn btn-primary">{% trans "Create task" %}</a>
+    <h1>{% trans "Задачи" %}</h1>
+    <a href="{% url 'tasks_create' %}" class="btn btn-primary">{% trans "Создать задачу" %}</a>
 </div>
 
-<!-- Форма фильтрации -->
 <form method="get" class="mb-4">
     <div class="row g-3">
         <div class="col-md-3">
@@ -26,22 +25,21 @@
     </div>
     <div class="row mt-3">
         <div class="col">
-            <button type="submit" class="btn btn-primary">{% trans "Apply" %}</button>
-            <a href="{% url 'tasks_list' %}" class="btn btn-secondary">{% trans "Reset" %}</a>
+            <button type="submit" class="btn btn-primary">{% trans "Применить" %}</button>
+            <a href="{% url 'tasks_list' %}" class="btn btn-secondary">{% trans "Сбросить" %}</a>
         </div>
     </div>
 </form>
 
-<!-- Таблица задач (остается без изменений) -->
 <table class="table table-striped">
     <thead>
         <tr>
             <th>ID</th>
-            <th>{% trans "Name" %}</th>
-            <th>{% trans "Status" %}</th>
-            <th>{% trans "Author" %}</th>
-            <th>{% trans "Assignee" %}</th>
-            <th>{% trans "Created" %}</th>
+            <th>{% trans "Имя" %}</th>
+            <th>{% trans "Статус" %}</th>
+            <th>{% trans "Автор" %}</th>
+            <th>{% trans "Исполнитель" %}</th>
+            <th>{% trans "Дата создания" %}</th>
             <th></th>
         </tr>
     </thead>
@@ -55,9 +53,9 @@
             <td>{{ task.assignee.username|default:"—" }}</td>
             <td>{{ task.created_at|date:"d.m.Y H:i" }}</td>
             <td>
-                <a href="{% url 'tasks_detail' task.id %}">{% trans "Show" %}</a><br>
-                <a href="{% url 'tasks_update' task.id %}">{% trans "Edit" %}</a><br>
-                <a href="{% url 'tasks_delete' task.id %}">{% trans "Delete" %}</a>
+                <a href="{% url 'tasks_detail' task.id %}">{% trans "Просмотр" %}</a><br>
+                <a href="{% url 'tasks_update' task.id %}">{% trans "Изменить" %}</a><br>
+                <a href="{% url 'tasks_delete' task.id %}">{% trans "Удалить" %}</a>
             </td>
         </tr>
         {% endfor %}

@@ -3,10 +3,10 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<h1 class="my-4">{% trans "Edit task" %}</h1>
+<h1 class="my-4">{% trans "Изменение задачи" %}</h1>
 <form method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <button type="submit" class="btn btn-primary">{% trans "Change" %}</button>
+    <button type="submit" class="btn btn-primary">{% trans "Обновить" %}</button>
 </form>
 {% endblock %}

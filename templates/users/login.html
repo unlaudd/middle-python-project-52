@@ -3,10 +3,10 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<h1 class="my-4">{% trans "Login" %}</h1>
+<h1 class="my-4">{% trans "Вход" %}</h1>
 <form method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <button type="submit" class="btn btn-primary">{% trans "Login" %}</button>
+    <button type="submit" class="btn btn-primary">{% trans "Войти" %}</button>
 </form>
 {% endblock %}

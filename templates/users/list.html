@@ -2,15 +2,15 @@
 {% load i18n %}
 
 {% block content %}
-<h1 class="my-4">{% trans "Users" %}</h1>
+<h1 class="my-4">{% trans "Пользователи" %}</h1>
 <table class="table table-striped">
     <thead>
         <tr>
             <th>ID</th>
-            <th>{% trans "Username" %}</th>
-            <th>{% trans "First name" %}</th>
-            <th>{% trans "Last name" %}</th>
-            <th>{% trans "Created" %}</th>
+            <th>{% trans "Имя пользователя" %}</th>
+            <th>{% trans "Имя" %}</th>
+            <th>{% trans "Фамилия" %}</th>
+            <th>{% trans "Дата создания" %}</th>
             <th></th>
         </tr>
     </thead>
@@ -23,9 +23,9 @@
             <td>{{ user.last_name }}</td>
             <td>{{ user.date_joined|date:"d.m.Y H:i" }}</td>
             <td>
-                <a href="{% url 'users_update' user.id %}">{% trans "Edit" %}</a>
+                <a href="{% url 'users_update' user.id %}">{% trans "Изменить" %}</a>
                 <br>
-                <a href="{% url 'users_delete' user.id %}">{% trans "Delete" %}</a>
+                <a href="{% url 'users_delete' user.id %}">{% trans "Удалить" %}</a>
             </td>
         </tr>
         {% endfor %}

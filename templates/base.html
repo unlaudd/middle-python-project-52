@@ -1,48 +1,48 @@
 {% load i18n %}
 {% load django_bootstrap5 %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Task Manager{% endblock %}</title>
+    <title>{% block title %}{% trans "Менеджер задач" %}{% endblock %}</title>
     {% bootstrap_css %}
     {% bootstrap_javascript %}
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">{% trans "Task Manager" %}</a>
+            <a class="navbar-brand" href="{% url 'home' %}">{% trans "Менеджер задач" %}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'labels_list' %}">{% trans "Labels" %}</a>
+                        <a class="nav-link" href="{% url 'labels_list' %}">{% trans "Метки" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'tasks_list' %}">{% trans "Tasks" %}</a>
+                        <a class="nav-link" href="{% url 'tasks_list' %}">{% trans "Задачи" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'statuses_list' %}">{% trans "Statuses" %}</a>
+                        <a class="nav-link" href="{% url 'statuses_list' %}">{% trans "Статусы" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'users_list' %}">{% trans "Users" %}</a>
+                        <a class="nav-link" href="{% url 'users_list' %}">{% trans "Пользователи" %}</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
                         <form method="post" action="{% url 'logout' %}" class="d-inline">
                             {% csrf_token %}
-                            <button type="submit" class="nav-link btn btn-link">{% trans "Logout" %}</button>
+                            <button type="submit" class="nav-link btn btn-link">{% trans "Выход" %}</button>
                         </form>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
+                        <a class="nav-link" href="{% url 'login' %}">{% trans "Вход" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'users_create' %}">{% trans "Register" %}</a>
+                        <a class="nav-link" href="{% url 'users_create' %}">{% trans "Регистрация" %}</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -64,7 +64,7 @@
     </main>
 
     <footer class="container mt-5 mb-3">
-        <p class="text-muted text-center">Task Manager &copy; 2026</p>
+        <p class="text-muted text-center">Менеджер задач &copy; 2026</p>
     </footer>
 </body>
 </html>

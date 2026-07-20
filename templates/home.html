@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Task Manager" %}{% endblock %}
+{% block title %}{% trans "Менеджер задач" %}{% endblock %}
 
 {% block content %}
 <div class="p-5 mb-4 bg-light rounded-3">
-    <h1 class="display-4">{% trans "Welcome to Task Manager" %}</h1>
-    <p class="lead">{% trans "A simple and convenient task management system." %}</p>
+    <h1 class="display-4">{% trans "Добро пожаловать в Менеджер задач" %}</h1>
+    <p class="lead">{% trans "Простая и удобная система управления задачами." %}</p>
     <hr class="my-4">
-    <p>{% trans "Get started by registering or logging in to your account." %}</p>
-    <a class="btn btn-primary btn-lg" href="{% url 'users_create' %}" role="button">{% trans "Register" %}</a>
-    <a class="btn btn-secondary btn-lg" href="{% url 'login' %}" role="button">{% trans "Login" %}</a>
+    <p>{% trans "Начните с регистрации или входа в свой аккаунт." %}</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'users_create' %}" role="button">{% trans "Регистрация" %}</a>
+    <a class="btn btn-secondary btn-lg" href="{% url 'login' %}" role="button">{% trans "Вход" %}</a>
 </div>
 {% endblock %}
