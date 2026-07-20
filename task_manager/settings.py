@@ -109,3 +109,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+ROLLBAR_ACCESS_TOKEN = os.getenv('ROLLBAR_ACCESS_TOKEN')
+
+if ROLLBAR_ACCESS_TOKEN:
+    ROLLBAR = {
+        'access_token': ROLLBAR_ACCESS_TOKEN,
+        'environment': os.getenv('ROLLBAR_ENVIRONMENT', 'development' if DEBUG else 'production'),
+        'root': BASE_DIR,
+    }
+    
+    import rollbar
+    rollbar.init(**ROLLBAR)
