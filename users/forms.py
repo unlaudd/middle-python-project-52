@@ -28,12 +28,10 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class UserUpdateForm(forms.ModelForm):
-    """
-    Form for updating user profile information.
-    """
     first_name = forms.CharField(label=_('Имя'), max_length=150, required=True)
     last_name = forms.CharField(label=_('Фамилия'), max_length=150, required=True)
     username = forms.CharField(label=_('Имя пользователя'), max_length=150, required=True)
+    # Добавляем поля пароля для формы обновления
     password1 = forms.CharField(
         label=_('Пароль'),
         widget=forms.PasswordInput,
@@ -52,6 +50,15 @@ class UserUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].label = _('Имя пользователя')
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        password = self.cleaned_data.get('password1')
+        if password:
+            user.set_password(password)
+        if commit:
+            user.save()
+        return user
 
 
 class LoginForm(AuthenticationForm):

@@ -52,7 +52,7 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
     form_class = UserUpdateForm
     template_name = 'users/update.html'
     success_url = reverse_lazy('users_list')
-    success_message = _('Пользователь успешно обновлен')
+    success_message = _('Пользователь успешно изменен')
 
     def test_func(self):
         return self.request.user == self.get_object()

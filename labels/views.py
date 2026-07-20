@@ -40,12 +40,11 @@ class LabelDeleteView(LoginRequiredMixin, DeleteView):
     model = Label
     template_name = 'labels/delete.html'
     success_url = reverse_lazy('labels_list')
-    success_message = _('Метка успешно удалена')
 
     def delete(self, request, *args, **kwargs):
         try:
             response = super().delete(request, *args, **kwargs)
-            messages.success(request, self.success_message)
+            messages.success(request, _('Метка успешно удалена'))
             return response
         except ProtectedError:
             messages.error(request, _('Невозможно удалить метку'))
