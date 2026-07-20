@@ -1,14 +1,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, redirect_to_login
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.db.models import ProtectedError
+
 from .forms import UserRegistrationForm, UserUpdateForm, LoginForm
-from django.contrib.auth.views import redirect_to_login
 
 
 class UserListView(ListView):
@@ -75,7 +76,11 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         messages.error(self.request, _('You do not have permission to change this user.'))
         return redirect('users_list')
 
-    def form_valid(self, request, *args, **kwargs):
-        response = super().delete(request, *args, **kwargs)
-        messages.success(self.request, _('User successfully deleted'))
-        return response
+    def delete(self, request, *args, **kwargs):
+        try:
+            response = super().delete(request, *args, **kwargs)
+            messages.success(self.request, _('User successfully deleted'))
+            return response
+        except ProtectedError:
+            messages.error(self.request, _('Cannot delete user linked to tasks'))
+            return redirect(self.success_url)

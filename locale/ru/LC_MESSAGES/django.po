@@ -145,3 +145,42 @@ msgstr "Статус успешно удален"
 
 msgid "Unable to delete status"
 msgstr "Невозможно удалить статус"
+
+msgid "Tasks"
+msgstr "Задачи"
+
+msgid "Create task"
+msgstr "Создать задачу"
+
+msgid "Edit task"
+msgstr "Изменение задачи"
+
+msgid "Delete task"
+msgstr "Удаление задачи"
+
+msgid "Task successfully created"
+msgstr "Задача успешно создана"
+
+msgid "Task successfully updated"
+msgstr "Задача успешно изменена"
+
+msgid "Task successfully deleted"
+msgstr "Задача успешно удалена"
+
+msgid "Only the author can delete the task"
+msgstr "Задачу может удалить только ее автор"
+
+msgid "Show"
+msgstr "Показать"
+
+msgid "Assignee"
+msgstr "Исполнитель"
+
+msgid "Labels"
+msgstr "Метки"
+
+msgid "Cannot delete user linked to tasks"
+msgstr "Невозможно удалить пользователя, связанного с задачами"
+
+msgid "Back"
+msgstr "Назад"
