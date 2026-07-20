@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from statuses.models import Status
-from .models import Task, Label
+from labels.models import Label
+from .models import Task
 
 
 class TaskCRUDTest(TestCase):
@@ -71,3 +72,46 @@ class TaskCRUDTest(TestCase):
         response = self.client.get(self.detail_url)
         self.assertEqual(response.status_code, 302)
         self.assertIn('/login/', response.url)
+
+    def test_filter_by_status(self):
+        self.client.login(username='author', password='pass123')
+        status2 = Status.objects.create(name='In Progress')
+        task2 = Task.objects.create(name='Task 2', status=status2, author=self.author)
+        
+        # Фильтруем по первому статусу
+        response = self.client.get(self.list_url + f'?status={self.status.pk}')
+        self.assertContains(response, 'Test Task')
+        self.assertNotContains(response, 'Task 2')
+
+    def test_filter_by_assignee(self):
+        self.client.login(username='author', password='pass123')
+        task2 = Task.objects.create(name='Task 2', status=self.status, author=self.author, assignee=self.other_user)
+        
+        response = self.client.get(self.list_url + f'?assignee={self.other_user.pk}')
+        self.assertContains(response, 'Task 2')
+        self.assertNotContains(response, 'Test Task')
+
+    def test_filter_by_label(self):
+        self.client.login(username='author', password='pass123')
+        label1 = Label.objects.create(name='bug')
+        label2 = Label.objects.create(name='feature')
+        
+        task1 = Task.objects.create(name='Task 1', status=self.status, author=self.author)
+        task1.labels.add(label1)
+        
+        task2 = Task.objects.create(name='Task 2', status=self.status, author=self.author)
+        task2.labels.add(label2)
+        
+        response = self.client.get(self.list_url + f'?labels={label1.pk}')
+        self.assertContains(response, 'Task 1')
+        self.assertNotContains(response, 'Task 2')
+
+    def test_filter_only_my_tasks(self):
+        self.client.login(username='author', password='pass123')
+        # Задача другого пользователя
+        Task.objects.create(name='Other Task', status=self.status, author=self.other_user)
+        
+        # ИСПРАВЛЕНО: используем True вместо 'on' для надежной работы BooleanFilter
+        response = self.client.get(self.list_url + '?only_my_tasks=True')
+        self.assertContains(response, 'Test Task')
+        self.assertNotContains(response, 'Other Task')
