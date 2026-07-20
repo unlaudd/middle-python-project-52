@@ -36,3 +36,4 @@ class TaskForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['status'].queryset = Status.objects.all()
         self.fields['assignee'].queryset = User.objects.all()
+        self.fields['assignee'].label_from_instance = lambda obj: f"{obj.first_name} {obj.last_name}".strip() or obj.username

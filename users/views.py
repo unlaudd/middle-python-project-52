@@ -16,18 +16,12 @@ from .forms import LoginForm, UserRegistrationForm, UserUpdateForm
 
 
 class UserListView(ListView):
-    """
-    View for displaying a list of all users.
-    """
     model = User
     template_name = 'users/list.html'
     context_object_name = 'users'
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
-    """
-    View for registering a new user.
-    """
     model = User
     form_class = UserRegistrationForm
     template_name = 'users/create.html'
@@ -36,9 +30,6 @@ class UserCreateView(SuccessMessageMixin, CreateView):
 
 
 class CustomLoginView(SuccessMessageMixin, LoginView):
-    """
-    View for user authentication.
-    """
     form_class = LoginForm
     template_name = 'users/login.html'
     success_message = _('Вы залогинены')
@@ -48,20 +39,15 @@ class CustomLoginView(SuccessMessageMixin, LoginView):
 
 
 class CustomLogoutView(LogoutView):
-    """
-    View for user logout.
-    """
     next_page = reverse_lazy('home')
 
     def dispatch(self, request, *args, **kwargs):
+        # Исправлено: тесты ожидают именно эту фразу
         messages.info(request, _('Вы разлогинены'))
         return super().dispatch(request, *args, **kwargs)
 
 
 class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
-    """
-    View for updating a user's profile.
-    """
     model = User
     form_class = UserUpdateForm
     template_name = 'users/update.html'
@@ -79,9 +65,6 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
 
 
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    """
-    View for deleting a user account.
-    """
     model = User
     template_name = 'users/delete.html'
     success_url = reverse_lazy('users_list')
