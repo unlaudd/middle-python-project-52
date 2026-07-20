@@ -33,10 +33,21 @@ class UserUpdateForm(forms.ModelForm):
     """
     first_name = forms.CharField(label=_('Имя'), max_length=150, required=True)
     last_name = forms.CharField(label=_('Фамилия'), max_length=150, required=True)
+    username = forms.CharField(label=_('Имя пользователя'), max_length=150, required=True)
+    password1 = forms.CharField(
+        label=_('Пароль'),
+        widget=forms.PasswordInput,
+        required=False
+    )
+    password2 = forms.CharField(
+        label=_('Подтверждение пароля'),
+        widget=forms.PasswordInput,
+        required=False
+    )
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name')
+        fields = ('username', 'first_name', 'last_name', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
