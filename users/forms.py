@@ -16,22 +16,22 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('username', 'first_name', 'last_name', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Переопределяем метки встроенных полей, не ломая их валидацию
         self.fields['username'].label = _('Имя пользователя')
         self.fields['password1'].label = _('Пароль')
         self.fields['password2'].label = _('Подтверждение пароля')
-        self.fields['password2'].help_text = _('Введите тот же пароль, что и ранее, для проверки.')
 
 
 class UserUpdateForm(forms.ModelForm):
+    """
+    Form for updating user profile information.
+    """
     first_name = forms.CharField(label=_('Имя'), max_length=150, required=True)
     last_name = forms.CharField(label=_('Фамилия'), max_length=150, required=True)
     username = forms.CharField(label=_('Имя пользователя'), max_length=150, required=True)
-    # Добавляем поля пароля для формы обновления
     password1 = forms.CharField(
         label=_('Пароль'),
         widget=forms.PasswordInput,
@@ -46,10 +46,6 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'password1', 'password2')
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['username'].label = _('Имя пользователя')
 
     def save(self, commit=True):
         user = super().save(commit=False)

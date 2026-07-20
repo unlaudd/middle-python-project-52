@@ -15,12 +15,18 @@ from .models import Label
 
 
 class LabelListView(LoginRequiredMixin, ListView):
+    """
+    View for displaying a list of all task labels.
+    """
     model = Label
     template_name = 'labels/list.html'
     context_object_name = 'labels'
 
 
 class LabelCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    """
+    View for creating a new task label.
+    """
     model = Label
     form_class = LabelForm
     template_name = 'labels/create.html'
@@ -29,14 +35,20 @@ class LabelCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
 
 class LabelUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    View for updating an existing task label.
+    """
     model = Label
     form_class = LabelForm
     template_name = 'labels/update.html'
     success_url = reverse_lazy('labels_list')
-    success_message = _('Метка успешно изменена')  # <-- Исправлено
+    success_message = _('Метка успешно изменена')
 
 
 class LabelDeleteView(LoginRequiredMixin, DeleteView):
+    """
+    View for deleting a task label.
+    """
     model = Label
     template_name = 'labels/delete.html'
     success_url = reverse_lazy('labels_list')

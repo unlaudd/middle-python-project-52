@@ -15,12 +15,18 @@ from .models import Status
 
 
 class StatusListView(LoginRequiredMixin, ListView):
+    """
+    View for displaying a list of all task statuses.
+    """
     model = Status
     template_name = 'statuses/list.html'
     context_object_name = 'statuses'
 
 
 class StatusCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    """
+    View for creating a new task status.
+    """
     model = Status
     form_class = StatusForm
     template_name = 'statuses/create.html'
@@ -29,14 +35,20 @@ class StatusCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
 
 class StatusUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    View for updating an existing task status.
+    """
     model = Status
     form_class = StatusForm
     template_name = 'statuses/update.html'
     success_url = reverse_lazy('statuses_list')
-    success_message = _('Статус успешно изменен')  # <-- Исправлено
+    success_message = _('Статус успешно изменен')
 
 
 class StatusDeleteView(LoginRequiredMixin, DeleteView):
+    """
+    View for deleting a task status.
+    """
     model = Status
     template_name = 'statuses/delete.html'
     success_url = reverse_lazy('statuses_list')
