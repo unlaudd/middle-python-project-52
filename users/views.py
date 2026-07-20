@@ -41,7 +41,7 @@ class CustomLoginView(SuccessMessageMixin, LoginView):
     """
     form_class = LoginForm
     template_name = 'users/login.html'
-    success_message = _('Вы вошли в систему')
+    success_message = _('Вы залогинены')
 
     def get_success_url(self):
         return reverse_lazy('home')
