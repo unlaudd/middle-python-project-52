@@ -31,7 +31,7 @@ class StatusCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = StatusForm
     template_name = 'statuses/create.html'
     success_url = reverse_lazy('statuses_list')
-    success_message = _('Status successfully created')
+    success_message = _('Статус успешно создан')
 
 
 class StatusUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
@@ -42,7 +42,7 @@ class StatusUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = StatusForm
     template_name = 'statuses/update.html'
     success_url = reverse_lazy('statuses_list')
-    success_message = _('Status successfully updated')
+    success_message = _('Статус успешно обновлен')
 
 
 class StatusDeleteView(LoginRequiredMixin, DeleteView):
@@ -60,8 +60,8 @@ class StatusDeleteView(LoginRequiredMixin, DeleteView):
         """
         try:
             response = super().delete(request, *args, **kwargs)
-            messages.success(request, _('Status successfully deleted'))
+            messages.success(request, _('Статус успешно удален'))
             return response
         except ProtectedError:
-            messages.error(request, _('Cannot delete status linked to tasks'))
+            messages.error(request, _('Невозможно удалить статус, связанный с задачами'))
             return redirect(self.success_url)

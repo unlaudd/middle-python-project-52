@@ -18,7 +18,6 @@ from .forms import LoginForm, UserRegistrationForm, UserUpdateForm
 class UserListView(ListView):
     """
     View for displaying a list of all users.
-    Accessible without authentication.
     """
     model = User
     template_name = 'users/list.html'
@@ -33,7 +32,7 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     form_class = UserRegistrationForm
     template_name = 'users/create.html'
     success_url = reverse_lazy('login')
-    success_message = _('User successfully registered')
+    success_message = _('Пользователь успешно зарегистрирован')
 
 
 class CustomLoginView(SuccessMessageMixin, LoginView):
@@ -42,7 +41,7 @@ class CustomLoginView(SuccessMessageMixin, LoginView):
     """
     form_class = LoginForm
     template_name = 'users/login.html'
-    success_message = _('You are logged in')
+    success_message = _('Вы вошли в систему')
 
     def get_success_url(self):
         """
@@ -61,20 +60,19 @@ class CustomLogoutView(LogoutView):
         """
         Add a flash message upon logout.
         """
-        messages.info(request, _('You are logged out'))
+        messages.info(request, _('Вы вышли из системы'))
         return super().dispatch(request, *args, **kwargs)
 
 
 class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     """
     View for updating a user's profile.
-    Users can only update their own profiles.
     """
     model = User
     form_class = UserUpdateForm
     template_name = 'users/update.html'
     success_url = reverse_lazy('users_list')
-    success_message = _('User successfully updated')
+    success_message = _('Пользователь успешно обновлен')
 
     def test_func(self):
         """
@@ -89,14 +87,13 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
         """
         if not self.request.user.is_authenticated:
             return redirect_to_login(self.request.get_full_path())
-        messages.error(self.request, _('You do not have permission to change this user.'))
+        messages.error(self.request, _('У вас нет прав для изменения этого пользователя.'))
         return redirect('users_list')
 
 
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """
     View for deleting a user account.
-    Users can only delete their own accounts, and only if they are not linked to tasks.
     """
     model = User
     template_name = 'users/delete.html'
@@ -115,7 +112,7 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         """
         if not self.request.user.is_authenticated:
             return redirect_to_login(self.request.get_full_path())
-        messages.error(self.request, _('You do not have permission to change this user.'))
+        messages.error(self.request, _('У вас нет прав для изменения этого пользователя.'))
         return redirect('users_list')
 
     def delete(self, request, *args, **kwargs):
@@ -124,8 +121,8 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         """
         try:
             response = super().delete(request, *args, **kwargs)
-            messages.success(self.request, _('User successfully deleted'))
+            messages.success(self.request, _('Пользователь успешно удален'))
             return response
         except ProtectedError:
-            messages.error(self.request, _('Cannot delete user linked to tasks'))
+            messages.error(self.request, _('Невозможно удалить пользователя, связанного с задачами'))
             return redirect(self.success_url)

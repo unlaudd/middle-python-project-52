@@ -87,4 +87,4 @@ class LabelCRUDTest(TestCase):
         self.assertTrue(Label.objects.filter(name='bug').exists())
 
         messages = list(get_messages(response.wsgi_request))
-        self.assertIn('Unable to delete label', str(messages[0]))
+        self.assertIn('Невозможно удалить метку', str(messages[0]))

@@ -19,11 +19,11 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ['name', 'description', 'status', 'assignee', 'labels']
         labels = {
-            'name': _('Name'),
-            'description': _('Description'),
-            'status': _('Status'),
-            'assignee': _('Assignee'),
-            'labels': _('Labels'),
+            'name': _('Имя'),
+            'description': _('Описание'),
+            'status': _('Статус'),
+            'assignee': _('Исполнитель'),
+            'labels': _('Метки'),
         }
         widgets = {
             'labels': forms.SelectMultiple(attrs={'class': 'form-select', 'size': '5'}),

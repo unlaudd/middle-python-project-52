@@ -30,7 +30,7 @@ class LabelCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = LabelForm
     template_name = 'labels/create.html'
     success_url = reverse_lazy('labels_list')
-    success_message = _('Label successfully created')
+    success_message = _('Метка успешно создана')
 
 
 class LabelUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
@@ -41,7 +41,7 @@ class LabelUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = LabelForm
     template_name = 'labels/update.html'
     success_url = reverse_lazy('labels_list')
-    success_message = _('Label successfully updated')
+    success_message = _('Метка успешно обновлена')
 
 
 class LabelDeleteView(LoginRequiredMixin, DeleteView):
@@ -59,6 +59,6 @@ class LabelDeleteView(LoginRequiredMixin, DeleteView):
         """
         self.object = self.get_object()
         if self.object.task_set.exists():
-            messages.error(request, _('Unable to delete label'))
+            messages.error(request, _('Невозможно удалить метку'))
             return redirect(self.success_url)
         return super().post(request, *args, **kwargs)

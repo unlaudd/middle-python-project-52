@@ -12,30 +12,30 @@ class UserRegistrationForm(UserCreationForm):
     Form for registering a new user with first name, last name, and username.
     """
     first_name = forms.CharField(
-        label=_('First name'),
+        label=_('Имя'),
         max_length=30,
         required=True
     )
     last_name = forms.CharField(
-        label=_('Last name'),
+        label=_('Фамилия'),
         max_length=30,
         required=True
     )
     username = forms.CharField(
-        label=_('Username'),
+        label=_('Имя пользователя'),
         max_length=150,
         required=True
     )
     password1 = forms.CharField(
-        label=_('Password'),
+        label=_('Пароль'),
         widget=forms.PasswordInput,
         required=True
     )
     password2 = forms.CharField(
-        label=_('Password confirmation'),
+        label=_('Подтверждение пароля'),
         widget=forms.PasswordInput,
         required=True,
-        help_text=_('Enter the same password as before, for verification.')
+        help_text=_('Введите тот же пароль, что и ранее, для проверки.')
     )
 
     class Meta:
@@ -59,17 +59,17 @@ class UserUpdateForm(forms.ModelForm):
     Form for updating user profile information.
     """
     first_name = forms.CharField(
-        label=_('First name'),
+        label=_('Имя'),
         max_length=30,
         required=True
     )
     last_name = forms.CharField(
-        label=_('Last name'),
+        label=_('Фамилия'),
         max_length=30,
         required=True
     )
     username = forms.CharField(
-        label=_('Username'),
+        label=_('Имя пользователя'),
         max_length=150,
         required=True
     )
@@ -84,12 +84,12 @@ class LoginForm(AuthenticationForm):
     Form for user authentication.
     """
     username = forms.CharField(
-        label=_('Username'),
+        label=_('Имя пользователя'),
         max_length=150,
         required=True
     )
     password = forms.CharField(
-        label=_('Password'),
+        label=_('Пароль'),
         widget=forms.PasswordInput,
         required=True
     )

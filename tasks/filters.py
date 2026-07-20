@@ -13,7 +13,7 @@ class TaskFilter(django_filters.FilterSet):
     FilterSet for filtering tasks by status, assignee, labels, and author.
     """
     only_my_tasks = django_filters.BooleanFilter(
-        label=_('Only my tasks'),
+        label=_('Только свои задачи'),
         method='filter_only_my_tasks',
         widget=forms.CheckboxInput()
     )
@@ -22,9 +22,9 @@ class TaskFilter(django_filters.FilterSet):
         model = Task
         fields = ['status', 'assignee', 'labels', 'only_my_tasks']
         labels = {
-            'status': _('Status'),
-            'assignee': _('Assignee'),
-            'labels': _('Label'),
+            'status': _('Статус'),
+            'assignee': _('Исполнитель'),
+            'labels': _('Метка'),
         }
 
     def filter_only_my_tasks(self, queryset, name, value):

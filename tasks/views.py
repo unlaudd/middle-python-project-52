@@ -28,13 +28,12 @@ class TaskListView(LoginRequiredMixin, FilterView):
 class TaskCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     """
     View for creating a new task.
-    The current user is automatically set as the author.
     """
     model = Task
     form_class = TaskForm
     template_name = 'tasks/create.html'
     success_url = reverse_lazy('tasks_list')
-    success_message = _('Task successfully created')
+    success_message = _('Задача успешно создана')
 
     def form_valid(self, form):
         """
@@ -52,13 +51,12 @@ class TaskUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = TaskForm
     template_name = 'tasks/update.html'
     success_url = reverse_lazy('tasks_list')
-    success_message = _('Task successfully updated')
+    success_message = _('Задача успешно обновлена')
 
 
 class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """
     View for deleting a task.
-    Only the task author is allowed to delete it.
     """
     model = Task
     template_name = 'tasks/delete.html'
@@ -74,7 +72,7 @@ class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         """
         Handle unauthorized access attempts with an error message.
         """
-        messages.error(self.request, _('Only the author can delete the task'))
+        messages.error(self.request, _('Задачу может удалить только ее автор'))
         return redirect('tasks_list')
 
     def delete(self, request, *args, **kwargs):
@@ -82,7 +80,7 @@ class TaskDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         Delete the task and show a success message.
         """
         response = super().delete(request, *args, **kwargs)
-        messages.success(request, _('Task successfully deleted'))
+        messages.success(request, _('Задача успешно удалена'))
         return response
 
 

@@ -1,3 +1,4 @@
+# statuses/forms.py
 """
 Forms for the statuses application.
 """
@@ -11,7 +12,7 @@ class StatusForm(forms.ModelForm):
     """
     Form for creating and updating task statuses.
     """
-    name = forms.CharField(label=_('Name'), max_length=100)
+    name = forms.CharField(label=_('Имя'), max_length=100)
 
     class Meta:
         model = Status

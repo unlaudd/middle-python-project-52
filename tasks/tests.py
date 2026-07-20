@@ -93,7 +93,7 @@ class TaskCRUDTest(TestCase):
         self.assertTrue(Task.objects.filter(name='Test Task').exists())
 
         messages = list(get_messages(response.wsgi_request))
-        self.assertIn('Only the author can delete the task', str(messages[0]))
+        self.assertIn('Задачу может удалить только ее автор', str(messages[0]))
 
     def test_detail_requires_login(self):
         """

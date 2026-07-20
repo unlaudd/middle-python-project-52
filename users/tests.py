@@ -46,7 +46,7 @@ class UserRegistrationTest(TestCase):
 
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
-        self.assertIn('successfully registered', str(messages[0]))
+        self.assertIn('успешно зарегистрирован', str(messages[0]))
 
     def test_user_registration_with_existing_username(self):
         """
@@ -114,7 +114,7 @@ class UserLoginTest(TestCase):
 
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
-        self.assertIn('logged in', str(messages[0]))
+        self.assertIn('вошли в систему', str(messages[0]))
 
     def test_login_with_invalid_credentials(self):
         """
@@ -245,7 +245,7 @@ class UserUpdateViewTest(TestCase):
 
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
-        self.assertIn('successfully updated', str(messages[0]))
+        self.assertIn('успешно обновлен', str(messages[0]))
 
     def test_user_cannot_update_other_user(self):
         """
@@ -265,7 +265,7 @@ class UserUpdateViewTest(TestCase):
 
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
-        self.assertIn('permission', str(messages[0]))
+        self.assertIn('нет прав', str(messages[0]))
 
     def test_unauthenticated_user_cannot_update(self):
         """
@@ -310,7 +310,7 @@ class UserDeleteViewTest(TestCase):
 
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
-        self.assertIn('successfully deleted', str(messages[0]))
+        self.assertIn('успешно удален', str(messages[0]))
 
     def test_user_cannot_delete_other_user(self):
         """
@@ -325,7 +325,7 @@ class UserDeleteViewTest(TestCase):
 
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
-        self.assertIn('permission', str(messages[0]))
+        self.assertIn('нет прав', str(messages[0]))
 
     def test_unauthenticated_user_cannot_delete(self):
         """

@@ -1,3 +1,4 @@
+# labels/forms.py
 """
 Forms for the labels application.
 """
@@ -11,7 +12,7 @@ class LabelForm(forms.ModelForm):
     """
     Form for creating and updating task labels.
     """
-    name = forms.CharField(label=_('Name'), max_length=50)
+    name = forms.CharField(label=_('Имя'), max_length=50)
 
     class Meta:
         model = Label
