@@ -4,12 +4,12 @@
 {% block title %}{% trans "Task Manager" %}{% endblock %}
 
 {% block content %}
-<div class="jumbotron bg-light p-5 rounded">
+<div class="p-5 mb-4 bg-light rounded-3">
     <h1 class="display-4">{% trans "Welcome to Task Manager" %}</h1>
     <p class="lead">{% trans "A simple and convenient task management system." %}</p>
     <hr class="my-4">
     <p>{% trans "Get started by registering or logging in to your account." %}</p>
-    <a class="btn btn-primary btn-lg" href="#" role="button">{% trans "Register" %}</a>
-    <a class="btn btn-secondary btn-lg" href="#" role="button">{% trans "Login" %}</a>
+    <a class="btn btn-primary btn-lg" href="{% url 'users_create' %}" role="button">{% trans "Register" %}</a>
+    <a class="btn btn-secondary btn-lg" href="{% url 'login' %}" role="button">{% trans "Login" %}</a>
 </div>
 {% endblock %}

@@ -1,0 +1,81 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.utils.translation import gettext_lazy as _
+from django.contrib import messages
+from django.shortcuts import redirect
+from .forms import UserRegistrationForm, UserUpdateForm, LoginForm
+from django.contrib.auth.views import redirect_to_login
+
+
+class UserListView(ListView):
+    model = User
+    template_name = 'users/list.html'
+    context_object_name = 'users'
+
+
+class UserCreateView(SuccessMessageMixin, CreateView):
+    model = User
+    form_class = UserRegistrationForm
+    template_name = 'users/create.html'
+    success_url = reverse_lazy('login')
+    success_message = _('User successfully registered')
+
+
+class CustomLoginView(SuccessMessageMixin, LoginView):
+    form_class = LoginForm
+    template_name = 'users/login.html'
+    success_message = _('You are logged in')
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+
+class CustomLogoutView(LogoutView):
+    next_page = reverse_lazy('home')
+
+    def dispatch(self, request, *args, **kwargs):
+        messages.info(request, _('You are logged out'))
+        return super().dispatch(request, *args, **kwargs)
+
+
+class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+    model = User
+    form_class = UserUpdateForm
+    template_name = 'users/update.html'
+    success_url = reverse_lazy('users_list')
+    success_message = _('User successfully updated')
+
+    def test_func(self):
+        obj = self.get_object()
+        return self.request.user == obj
+
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
+            return redirect_to_login(self.request.get_full_path())
+        messages.error(self.request, _('You do not have permission to change this user.'))
+        return redirect('users_list')
+
+
+class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = User
+    template_name = 'users/delete.html'
+    success_url = reverse_lazy('users_list')
+
+    def test_func(self):
+        obj = self.get_object()
+        return self.request.user == obj
+
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
+            return redirect_to_login(self.request.get_full_path())
+        messages.error(self.request, _('You do not have permission to change this user.'))
+        return redirect('users_list')
+
+    def form_valid(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        messages.success(self.request, _('User successfully deleted'))
+        return response
