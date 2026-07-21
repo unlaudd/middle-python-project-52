@@ -63,10 +63,11 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
         return redirect('users_list')
 
 
-class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
     model = User
     template_name = 'users/delete.html'
     success_url = reverse_lazy('users_list')
+    success_message = _('Пользователь успешно удален')
 
     def test_func(self):
         return self.request.user == self.get_object()
@@ -79,9 +80,8 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         try:
-            response = super().delete(request, *args, **kwargs)
-            messages.success(self.request, _('Пользователь успешно удален'))
-            return response
+            # super().delete() сам добавит сообщение об успехе благодаря SuccessMessageMixin
+            return super().delete(request, *args, **kwargs)
         except ProtectedError:
             messages.error(self.request, _('Невозможно удалить пользователя, связанного с задачами'))
             return redirect(self.success_url)
