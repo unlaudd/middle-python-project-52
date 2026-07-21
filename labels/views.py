@@ -4,7 +4,6 @@ Views for label management operations.
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import ProtectedError
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -36,16 +35,18 @@ class LabelUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_message = _('Метка успешно изменена')
 
 
-class LabelDeleteView(LoginRequiredMixin, DeleteView):
+class LabelDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Label
     template_name = 'labels/delete.html'
     success_url = reverse_lazy('labels_list')
+    success_message = _('Метка успешно удалена')
 
-    def form_valid(self, form):
-        try:
-            self.object.delete()
-            messages.success(self.request, _('Метка успешно удалена'))
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        # ManyToManyField не вызывает ProtectedError, поэтому проверяем вручную
+        if self.object.tasks.exists():
+            messages.error(request, _('Невозможно удалить метку'))
             return redirect(self.success_url)
-        except ProtectedError:
-            messages.error(self.request, _('Невозможно удалить метку'))
-            return redirect(self.success_url)
+        
+        messages.success(request, self.success_message)
+        return super().post(request, *args, **kwargs)

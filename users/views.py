@@ -51,7 +51,7 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
     form_class = UserUpdateForm
     template_name = 'users/update.html'
     success_url = reverse_lazy('users_list')
-    success_message = _('Пользователь успешно обновлен')
+    success_message = _('Пользователь успешно изменен')  # <-- Исправлено под ожидание теста
 
     def test_func(self):
         return self.request.user == self.get_object()
@@ -77,11 +77,11 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         messages.error(self.request, _('У вас нет прав для изменения этого пользователя.'))
         return redirect('users_list')
 
-    def form_valid(self, form):
+    def delete(self, request, *args, **kwargs):
         try:
-            self.object.delete()
+            response = super().delete(request, *args, **kwargs)
             messages.success(self.request, _('Пользователь успешно удален'))
-            return redirect(self.success_url)
+            return response
         except ProtectedError:
             messages.error(self.request, _('Невозможно удалить пользователя, связанного с задачами'))
             return redirect(self.success_url)
