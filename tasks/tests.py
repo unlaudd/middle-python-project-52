@@ -1,5 +1,9 @@
 """
 Tests for the tasks application.
+
+This module contains comprehensive test cases for verifying the complete
+CRUD (Create, Read, Update, Delete) functionality of tasks, as well as
+the task filtering capabilities (by status, assignee, label, and author).
 """
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
@@ -15,11 +19,31 @@ from .models import Task
 class TaskCRUDTest(TestCase):
     """
     Test suite for task CRUD operations and filtering.
+
+    This test class verifies that tasks can be created, read, updated,
+    and deleted correctly, with appropriate access controls (e.g., only
+    the author can delete a task). It also verifies that the task list
+    can be filtered by various criteria.
+
+    Attributes:
+        client (Client): Django test client for making HTTP requests.
+        author (User): The user who authors the test tasks.
+        other_user (User): A different user to test authorization boundaries.
+        status (Status): A test status for the tasks.
+        task (Task): A test task instance authored by the 'author' user.
+        create_url (str): URL for task creation.
+        update_url (str): URL for task update.
+        delete_url (str): URL for task deletion.
+        detail_url (str): URL for task detail view.
+        list_url (str): URL for task list view.
     """
 
     def setUp(self):
         """
         Set up test data and URLs.
+
+        Creates test users, a status, and a base task. Initializes
+        URL references for all task-related CRUD endpoints.
         """
         self.client = Client()
         self.author = User.objects.create_user(username='author', password='pass123')
@@ -39,7 +63,11 @@ class TaskCRUDTest(TestCase):
 
     def test_list_requires_login(self):
         """
-        Unauthenticated users should be redirected to the login page.
+        Test that unauthenticated users are redirected to the login page.
+
+        Expected Behavior:
+            - GET request to task list without authentication returns 302.
+            - Redirect URL contains '/login/'.
         """
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, 302)
@@ -47,7 +75,12 @@ class TaskCRUDTest(TestCase):
 
     def test_create_task_success(self):
         """
-        Authenticated users should be able to create a new task.
+        Test that authenticated users can successfully create a new task.
+
+        Expected Behavior:
+            - POST request with valid task data returns 302 redirect.
+            - Redirect target is the task list page.
+            - New task is created in the database with the correct author.
         """
         self.client.login(username='author', password='pass123')
         response = self.client.post(self.create_url, {
@@ -61,7 +94,11 @@ class TaskCRUDTest(TestCase):
 
     def test_update_task_success(self):
         """
-        Authenticated users should be able to update an existing task.
+        Test that authenticated users can successfully update an existing task.
+
+        Expected Behavior:
+            - POST request with updated task data returns 302 redirect.
+            - Task name and description in the database are updated.
         """
         self.client.login(username='author', password='pass123')
         response = self.client.post(self.update_url, {
@@ -75,7 +112,11 @@ class TaskCRUDTest(TestCase):
 
     def test_delete_task_by_author_success(self):
         """
-        The task author should be able to delete their own task.
+        Test that the task author can successfully delete their own task.
+
+        Expected Behavior:
+            - POST request to delete endpoint by the author returns 302.
+            - Task is removed from the database.
         """
         self.client.login(username='author', password='pass123')
         response = self.client.post(self.delete_url)
@@ -84,7 +125,13 @@ class TaskCRUDTest(TestCase):
 
     def test_delete_task_by_non_author_fails(self):
         """
-        Non-authors should not be able to delete a task and receive an error message.
+        Test that non-authors cannot delete a task and receive an error message.
+
+        Expected Behavior:
+            - POST request to delete endpoint by a non-author returns 302.
+            - Redirect target is the task list page.
+            - Task remains in the database.
+            - Error flash message 'Задачу может удалить только ее автор' is displayed.
         """
         self.client.login(username='other', password='pass123')
         response = self.client.post(self.delete_url)
@@ -97,7 +144,11 @@ class TaskCRUDTest(TestCase):
 
     def test_detail_requires_login(self):
         """
-        Unauthenticated users should be redirected when accessing task details.
+        Test that unauthenticated users are redirected when accessing task details.
+
+        Expected Behavior:
+            - GET request to task detail without authentication returns 302.
+            - Redirect URL contains '/login/'.
         """
         response = self.client.get(self.detail_url)
         self.assertEqual(response.status_code, 302)
@@ -105,7 +156,11 @@ class TaskCRUDTest(TestCase):
 
     def test_filter_by_status(self):
         """
-        Tasks should be filterable by status.
+        Test that tasks can be filtered by status.
+
+        Expected Behavior:
+            - Filtering by a specific status ID returns only tasks with that status.
+            - Tasks with other statuses are not present in the response.
         """
         self.client.login(username='author', password='pass123')
         status2 = Status.objects.create(name='In Progress')
@@ -117,7 +172,11 @@ class TaskCRUDTest(TestCase):
 
     def test_filter_by_assignee(self):
         """
-        Tasks should be filterable by assignee.
+        Test that tasks can be filtered by assignee.
+
+        Expected Behavior:
+            - Filtering by a specific assignee ID returns only tasks assigned to them.
+            - Tasks assigned to other users are not present in the response.
         """
         self.client.login(username='author', password='pass123')
         Task.objects.create(
@@ -133,7 +192,11 @@ class TaskCRUDTest(TestCase):
 
     def test_filter_by_label(self):
         """
-        Tasks should be filterable by label.
+        Test that tasks can be filtered by label.
+
+        Expected Behavior:
+            - Filtering by a specific label ID returns only tasks with that label.
+            - Tasks with other labels are not present in the response.
         """
         self.client.login(username='author', password='pass123')
         label1 = Label.objects.create(name='bug')
@@ -151,7 +214,12 @@ class TaskCRUDTest(TestCase):
 
     def test_filter_only_my_tasks(self):
         """
-        The 'only my tasks' filter should show only tasks authored by the current user.
+        Test that the 'only my tasks' filter shows only tasks authored by the current user.
+
+        Expected Behavior:
+            - Filtering with 'only_my_tasks=True' returns only tasks where the
+              current user is the author.
+            - Tasks authored by other users are not present in the response.
         """
         self.client.login(username='author', password='pass123')
         Task.objects.create(name='Other Task', status=self.status, author=self.other_user)

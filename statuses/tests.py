@@ -1,5 +1,10 @@
 """
 Tests for status CRUD operations.
+
+This module contains comprehensive test cases for verifying the complete
+CRUD (Create, Read, Update, Delete) functionality of task statuses,
+including authentication requirements, successful operations, and
+proper flash message handling.
 """
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
@@ -11,12 +16,25 @@ from .models import Status
 
 class StatusListViewTest(TestCase):
     """
-    Test suite for status list view.
+    Test suite for status list view functionality.
+
+    Verifies that the status list view properly handles authentication
+    requirements and displays all existing statuses to authenticated users.
+
+    Test Cases:
+        - Unauthenticated users are redirected to login page
+        - Authenticated users can view the status list with all statuses
     """
 
     def setUp(self):
         """
-        Set up test client, user, and status.
+        Set up test fixtures for status list view tests.
+
+        Creates:
+            - Test client for making HTTP requests
+            - Test user for authentication
+            - Test status ('New') for list verification
+            - URL reference for the statuses list endpoint
         """
         self.client = Client()
         self.user = User.objects.create_user(username='testuser', password='testpassword123')
@@ -25,7 +43,14 @@ class StatusListViewTest(TestCase):
 
     def test_requires_login(self):
         """
-        Unauthenticated users should be redirected to login.
+        Verify that unauthenticated users are redirected to login.
+
+        Expected Behavior:
+            - GET request to statuses_list without authentication returns 302
+            - Redirect URL contains '/login/' path
+
+        This ensures that the status list view is protected and requires
+        user authentication before displaying any data.
         """
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 302)
@@ -33,7 +58,14 @@ class StatusListViewTest(TestCase):
 
     def test_list_accessible_for_authenticated(self):
         """
-        Authenticated users should be able to view the status list.
+        Verify that authenticated users can view the status list.
+
+        Expected Behavior:
+            - GET request to statuses_list with authentication returns 200
+            - Response contains the status name 'New'
+
+        This ensures that authenticated users have proper access to view
+        all available task statuses in the system.
         """
         self.client.login(username='testuser', password='testpassword123')
         response = self.client.get(self.url)
@@ -43,12 +75,26 @@ class StatusListViewTest(TestCase):
 
 class StatusCreateViewTest(TestCase):
     """
-    Test suite for status creation.
+    Test suite for status creation functionality.
+
+    Verifies that the status creation view properly handles authentication
+    requirements and allows authenticated users to create new statuses
+    with appropriate success messaging.
+
+    Test Cases:
+        - Unauthenticated users are redirected to login page
+        - Authenticated users can create new statuses successfully
+        - Success flash message is displayed after creation
     """
 
     def setUp(self):
         """
-        Set up test client and user.
+        Set up test fixtures for status creation tests.
+
+        Creates:
+            - Test client for making HTTP requests
+            - Test user for authentication
+            - URL reference for the status creation endpoint
         """
         self.client = Client()
         self.user = User.objects.create_user(username='testuser', password='testpassword123')
@@ -56,14 +102,29 @@ class StatusCreateViewTest(TestCase):
 
     def test_requires_login(self):
         """
-        Unauthenticated users should be redirected to login.
+        Verify that unauthenticated users are redirected to login.
+
+        Expected Behavior:
+            - GET request to statuses_create without authentication returns 302
+
+        This ensures that the status creation view is protected and requires
+        user authentication before allowing any creation operations.
         """
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 302)
 
     def test_create_status_success(self):
         """
-        Authenticated users should be able to create a new status.
+        Verify that authenticated users can create new statuses successfully.
+
+        Expected Behavior:
+            - POST request with valid status data returns 302 redirect
+            - Redirect target is the statuses list page
+            - New status 'In Progress' is created in the database
+            - Success flash message 'successfully created' is displayed
+
+        This ensures that the status creation workflow functions correctly
+        and provides appropriate user feedback.
         """
         self.client.login(username='testuser', password='testpassword123')
         response = self.client.post(self.url, {'name': 'In Progress'})
@@ -77,12 +138,25 @@ class StatusCreateViewTest(TestCase):
 
 class StatusUpdateViewTest(TestCase):
     """
-    Test suite for status updates.
+    Test suite for status update functionality.
+
+    Verifies that authenticated users can successfully update existing
+    statuses with appropriate success messaging.
+
+    Test Cases:
+        - Authenticated users can update status names successfully
+        - Success flash message is displayed after update
     """
 
     def setUp(self):
         """
-        Set up test client, user, and status.
+        Set up test fixtures for status update tests.
+
+        Creates:
+            - Test client for making HTTP requests
+            - Test user for authentication
+            - Test status ('New') for update verification
+            - URL reference for the status update endpoint
         """
         self.client = Client()
         self.user = User.objects.create_user(username='testuser', password='testpassword123')
@@ -91,7 +165,15 @@ class StatusUpdateViewTest(TestCase):
 
     def test_update_status_success(self):
         """
-        Authenticated users should be able to update a status.
+        Verify that authenticated users can update status names successfully.
+
+        Expected Behavior:
+            - POST request with updated status data returns 302 redirect
+            - Status name in database is updated to 'Updated'
+            - Success flash message 'successfully updated' is displayed
+
+        This ensures that the status update workflow functions correctly
+        and provides appropriate user feedback.
         """
         self.client.login(username='testuser', password='testpassword123')
         response = self.client.post(self.url, {'name': 'Updated'})
@@ -105,12 +187,25 @@ class StatusUpdateViewTest(TestCase):
 
 class StatusDeleteViewTest(TestCase):
     """
-    Test suite for status deletion.
+    Test suite for status deletion functionality.
+
+    Verifies that authenticated users can successfully delete existing
+    statuses with proper database cleanup.
+
+    Test Cases:
+        - Authenticated users can delete statuses successfully
+        - Status is removed from database after deletion
     """
 
     def setUp(self):
         """
-        Set up test client, user, and status.
+        Set up test fixtures for status deletion tests.
+
+        Creates:
+            - Test client for making HTTP requests
+            - Test user for authentication
+            - Test status ('New') for deletion verification
+            - URL reference for the status deletion endpoint
         """
         self.client = Client()
         self.user = User.objects.create_user(username='testuser', password='testpassword123')
@@ -119,7 +214,15 @@ class StatusDeleteViewTest(TestCase):
 
     def test_delete_status_success(self):
         """
-        Authenticated users should be able to delete a status.
+        Verify that authenticated users can delete statuses successfully.
+
+        Expected Behavior:
+            - POST request to delete endpoint returns 302 redirect
+            - Redirect target is the statuses list page
+            - Status 'New' is removed from the database
+
+        This ensures that the status deletion workflow functions correctly
+        and properly cleans up database records.
         """
         self.client.login(username='testuser', password='testpassword123')
         response = self.client.post(self.url)

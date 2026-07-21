@@ -1,5 +1,18 @@
 """
 URL configuration for the task_manager project.
+
+This module defines the root URL patterns for the application, routing requests
+to the appropriate views and including URL configurations from individual apps.
+
+URL Patterns:
+    - 'admin/': Django administration interface.
+    - '': Home page (HomeView).
+    - 'login/': User authentication (CustomLoginView).
+    - 'logout/': User logout (CustomLogoutView).
+    - 'users/': User management operations (included from users.urls).
+    - 'statuses/': Status management operations (included from statuses.urls).
+    - 'tasks/': Task management operations (included from tasks.urls).
+    - 'labels/': Label management operations (included from labels.urls).
 """
 from django.contrib import admin
 from django.urls import include, path
