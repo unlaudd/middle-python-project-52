@@ -140,7 +140,7 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
         This method is called when the form validation passes. It saves
         the updated task data to the database and adds a success message
         to the request.
-        
+
         Args:
             form (TaskForm): The validated form instance with updated data.
         
@@ -185,13 +185,13 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
         This method intercepts the request before it reaches the view handler.
         It verifies that the authenticated user is the author of the task.
         If not, it displays an error message and redirects to the tasks list.
-        
+
         Args:
             request (HttpRequest): The HTTP request object.
             *args: Additional positional arguments from the URL pattern.
             **kwargs: Additional keyword arguments from the URL pattern
                 (includes 'pk' identifying the task to delete).
-        
+
         Returns:
             HttpResponse: The response from the parent dispatch method if
                 the user is authorized, or a redirect response with an error
@@ -210,12 +210,12 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
         This method handles the POST request for task deletion. It adds
         a success message to the request before delegating to the parent
         class's post method to perform the actual deletion.
-        
+
         Args:
             request (HttpRequest): The HTTP POST request object.
             *args: Additional positional arguments from the URL pattern.
             **kwargs: Additional keyword arguments from the URL pattern.
-        
+
         Returns:
             HttpResponseRedirect: Redirect response to the tasks list page
                 after successful task deletion.

@@ -18,20 +18,20 @@ class Status(models.Model):
     Each status has a unique name and tracks its creation timestamp.
     Statuses are protected from deletion when associated with tasks via
     the Task.status ForeignKey relationship (on_delete=models.PROTECT).
-    
+
     Attributes:
         name (CharField): The display name of the status. Must be unique
             across all statuses. Maximum length is 100 characters.
         created_at (DateTimeField): Timestamp of when the status was created.
             Automatically set on creation and cannot be modified.
-    
+
     Example:
         >>> status = Status.objects.create(name='In Progress')
         >>> status.name
         'In Progress'
         >>> task.status = status
         >>> task.save()
-    
+
     Note:
         Attempting to delete a status that is associated with one or more
         tasks will raise a ProtectedError. This constraint ensures that
@@ -43,7 +43,7 @@ class Status(models.Model):
     def __str__(self) -> str:
         """
         Return the string representation of the status.
-        
+
         Returns:
             str: The status name.
         """

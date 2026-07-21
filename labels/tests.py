@@ -19,7 +19,7 @@ from .models import Label
 class LabelCRUDTest(TestCase):
     """
     Test suite for label CRUD operations.
-    
+
     This test class verifies that labels can be created, read, updated,
     and deleted correctly, and that labels linked to tasks cannot be deleted
     to maintain data integrity.
@@ -37,7 +37,7 @@ class LabelCRUDTest(TestCase):
     def setUp(self):
         """
         Set up test fixtures.
-        
+
         Creates a test client, authenticated user, test label, and
         initializes URL variables for CRUD operations.
         """
@@ -55,7 +55,7 @@ class LabelCRUDTest(TestCase):
         
         Verifies that unauthenticated users are redirected to the login page
         when attempting to access the label list.
-        
+
         Expected:
             - Response status code: 302 (redirect)
             - Redirect URL contains '/login/'
@@ -67,10 +67,10 @@ class LabelCRUDTest(TestCase):
     def test_create_label_success(self):
         """
         Test successful label creation by authenticated user.
-        
+
         Verifies that an authenticated user can create a new label
         and is redirected to the label list after successful creation.
-        
+
         Expected:
             - Response status code: 302 (redirect)
             - Redirect to label list URL
@@ -85,10 +85,10 @@ class LabelCRUDTest(TestCase):
     def test_update_label_success(self):
         """
         Test successful label update by authenticated user.
-        
+
         Verifies that an authenticated user can update an existing label's name
         and is redirected to the label list after successful update.
-        
+
         Expected:
             - Response status code: 302 (redirect)
             - Label name in database updated to 'updated_bug'
@@ -102,7 +102,7 @@ class LabelCRUDTest(TestCase):
     def test_delete_label_success(self):
         """
         Test successful label deletion by authenticated user.
-        
+
         Verifies that an authenticated user can delete a label
         and is redirected to the label list after successful deletion.
         
@@ -118,14 +118,14 @@ class LabelCRUDTest(TestCase):
     def test_delete_label_linked_to_task_fails(self):
         """
         Test that labels linked to tasks cannot be deleted.
-        
+
         Verifies that attempting to delete a label that is associated with
         one or more tasks fails gracefully, displays an error message,
         and preserves both the label and the task-task relationship.
-        
+
         Setup:
             - Creates a status, task, and associates the test label with the task.
-        
+
         Expected:
             - Response status code: 302 (redirect)
             - Redirect to label list URL

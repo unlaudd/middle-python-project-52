@@ -13,7 +13,7 @@ Usage:
     To run the application with a WSGI server:
     
         gunicorn task_manager.wsgi:application --bind 0.0.0.0:8000
-    
+
     Or with uWSGI:
     
         uwsgi --http :8000 --module task_manager.wsgi:application

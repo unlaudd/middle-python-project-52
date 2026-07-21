@@ -13,7 +13,7 @@ Usage:
     To run the application with an ASGI server:
     
         uvicorn task_manager.asgi:application --host 0.0.0.0 --port 8000
-    
+
     Or with Daphne:
     
         daphne -b 0.0.0.0 -p 8000 task_manager.asgi:application

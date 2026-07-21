@@ -137,7 +137,7 @@ class Task(models.Model):
     def __str__(self):
         """
         Return the string representation of the task.
-        
+
         Returns:
             str: The task name.
         """

@@ -11,23 +11,23 @@ from django.utils.translation import gettext_lazy as _
 class Label(models.Model):
     """
     Model representing a task label (e.g., 'bug', 'feature', 'urgent').
-    
+
     Labels are used to categorize and group tasks, providing a flexible
     tagging system that allows multiple labels per task. Each label has
     a unique name and tracks its creation timestamp.
-    
+
     Attributes:
         name (CharField): The display name of the label. Must be unique
             across all labels. Maximum length is 50 characters.
         created_at (DateTimeField): Timestamp of when the label was created.
             Automatically set on creation and cannot be modified.
-    
+
     Example:
         >>> label = Label.objects.create(name='bug')
         >>> label.name
         'bug'
         >>> task.labels.add(label)
-    
+
     Note:
         Labels cannot be deleted if they are associated with any tasks.
         This constraint is enforced at the application level to maintain
