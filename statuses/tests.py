@@ -121,7 +121,7 @@ class StatusCreateViewTest(TestCase):
             - POST request with valid status data returns 302 redirect
             - Redirect target is the statuses list page
             - New status 'In Progress' is created in the database
-            - Success flash message 'successfully created' is displayed
+            - Success flash message 'Статус успешно создан' is displayed
 
         This ensures that the status creation workflow functions correctly
         and provides appropriate user feedback.
@@ -133,7 +133,7 @@ class StatusCreateViewTest(TestCase):
         self.assertTrue(Status.objects.filter(name='In Progress').exists())
 
         messages = list(get_messages(response.wsgi_request))
-        self.assertIn('successfully created', str(messages[0]))
+        self.assertIn('Статус успешно создан', str(messages[0]))
 
 
 class StatusUpdateViewTest(TestCase):
@@ -170,7 +170,7 @@ class StatusUpdateViewTest(TestCase):
         Expected Behavior:
             - POST request with updated status data returns 302 redirect
             - Status name in database is updated to 'Updated'
-            - Success flash message 'successfully updated' is displayed
+            - Success flash message 'Статус успешно изменен' is displayed
 
         This ensures that the status update workflow functions correctly
         and provides appropriate user feedback.
@@ -182,7 +182,7 @@ class StatusUpdateViewTest(TestCase):
         self.assertEqual(self.status.name, 'Updated')
 
         messages = list(get_messages(response.wsgi_request))
-        self.assertIn('successfully updated', str(messages[0]))
+        self.assertIn('Статус успешно изменен', str(messages[0]))
 
 
 class StatusDeleteViewTest(TestCase):

@@ -149,7 +149,7 @@ class UserLoginTest(TestCase):
             - POST request with valid credentials returns 302 redirect.
             - Redirect target is the home page.
             - The user is authenticated in the request object.
-            - A success flash message is displayed.
+            - A success flash message 'Вы залогинены' is displayed.
         """
         response = self.client.post(self.login_url, {
             'username': 'testuser',
@@ -162,7 +162,7 @@ class UserLoginTest(TestCase):
 
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
-        self.assertIn('вошли в систему', str(messages[0]))
+        self.assertIn('Вы залогинены', str(messages[0]))
 
     def test_login_with_invalid_credentials(self):
         """
@@ -319,7 +319,7 @@ class UserUpdateViewTest(TestCase):
             - POST request with valid update data returns 302 redirect.
             - Redirect target is the users list page.
             - The user's first and last names are updated in the database.
-            - A success flash message is displayed.
+            - A success flash message 'Пользователь успешно изменен' is displayed.
         """
         self.client.login(username='testuser', password='testpassword123')
         response = self.client.post(self.update_url, {
@@ -336,7 +336,7 @@ class UserUpdateViewTest(TestCase):
 
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
-        self.assertIn('успешно обновлен', str(messages[0]))
+        self.assertIn('Пользователь успешно изменен', str(messages[0]))
 
     def test_user_cannot_update_other_user(self):
         """
