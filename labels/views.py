@@ -4,7 +4,6 @@ Views for label management operations.
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import ProtectedError
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -42,10 +41,11 @@ class LabelDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     success_url = reverse_lazy('labels_list')
     success_message = _('Метка успешно удалена')
 
-    def delete(self, request, *args, **kwargs):
-        try:
-            # super().delete() сам вызовет self.object.delete() и добавит success_message
-            return super().delete(request, *args, **kwargs)
-        except ProtectedError:
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        # related_name не указан в модели, поэтому Django использует task_set
+        if self.object.task_set.exists():
             messages.error(request, _('Невозможно удалить метку'))
             return redirect(self.success_url)
+        
+        return super().post(request, *args, **kwargs)

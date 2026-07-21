@@ -36,16 +36,17 @@ class StatusUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_message = _('Статус успешно изменен')
 
 
-class StatusDeleteView(LoginRequiredMixin, DeleteView):
+class StatusDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Status
     template_name = 'statuses/delete.html'
     success_url = reverse_lazy('statuses_list')
+    success_message = _('Статус успешно удален')
 
-    def form_valid(self, form):
-        try:
-            self.object.delete()
-            messages.success(self.request, _('Статус успешно удален'))
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        # related_name не указан в модели, поэтому Django использует task_set
+        if self.object.task_set.exists():
+            messages.error(request, _('Невозможно удалить статус'))
             return redirect(self.success_url)
-        except ProtectedError:
-            messages.error(self.request, _('Невозможно удалить статус'))
-            return redirect(self.success_url)
+        
+        return super().post(request, *args, **kwargs)

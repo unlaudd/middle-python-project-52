@@ -78,10 +78,12 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
         messages.error(self.request, _('У вас нет прав для изменения этого пользователя.'))
         return redirect('users_list')
 
-    def delete(self, request, *args, **kwargs):
-        try:
-            # super().delete() сам добавит сообщение об успехе благодаря SuccessMessageMixin
-            return super().delete(request, *args, **kwargs)
-        except ProtectedError:
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        # Используем правильные related_name из твоей модели
+        if self.object.authored_tasks.exists() or self.object.assigned_tasks.exists():
             messages.error(self.request, _('Невозможно удалить пользователя, связанного с задачами'))
             return redirect(self.success_url)
+        
+        # super().post() удалит объект, а SuccessMessageMixin сам добавит сообщение
+        return super().post(request, *args, **kwargs)
