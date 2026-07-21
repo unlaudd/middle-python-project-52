@@ -105,7 +105,7 @@ class LabelCRUDTest(TestCase):
 
         Verifies that an authenticated user can delete a label
         and is redirected to the label list after successful deletion.
-        
+
         Expected:
             - Response status code: 302 (redirect)
             - Label with name 'bug' no longer exists in database

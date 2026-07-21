@@ -90,11 +90,11 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         """
         Set the current user as the task author and save the task.
-        
+
         This method is called when the form validation passes. It assigns
         the currently authenticated user as the task author before saving
         the task to the database.
-        
+
         Args:
             form (TaskForm): The validated form instance.
 

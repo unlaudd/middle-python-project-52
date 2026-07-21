@@ -109,8 +109,8 @@ class Task(models.Model):
     name = models.CharField(_('Name'), max_length=100, unique=True)
     description = models.TextField(_('Description'), blank=True)
     status = models.ForeignKey(
-        'statuses.Status', 
-        on_delete=models.PROTECT, 
+        'statuses.Status',
+        on_delete=models.PROTECT,
         verbose_name=_('Status')
     )
     author = models.ForeignKey(
