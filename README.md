@@ -1,5 +1,5 @@
 # Менеджер задач (Task Manager)
-[![CI](https://github.com/твой-username/hexlet-code/actions/workflows/ci.yml/badge.svg)](https://github.com/твой-username/hexlet-code/actions/workflows/ci.yml)
+[![CI](https://github.com/unlaudd/middle-python-project-52/actions/workflows/ci.yml/badge.svg)](https://github.com/unlaudd/middle-python-project-52/actions)
 [![Actions Status](https://github.com/unlaudd/middle-python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/unlaudd/middle-python-project-52/actions)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=unlaudd_middle-python-project-52&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=unlaudd_middle-python-project-52)
 
