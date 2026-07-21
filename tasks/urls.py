@@ -32,16 +32,16 @@ from .views import (
 urlpatterns = [
     # List all tasks with filtering capabilities
     path('', TaskListView.as_view(), name='tasks_list'),
-    
+
     # Create a new task
     path('create/', TaskCreateView.as_view(), name='tasks_create'),
-    
+
     # View detailed information about a specific task
     path('<int:pk>/', TaskDetailView.as_view(), name='tasks_detail'),
-    
+
     # Update an existing task
     path('<int:pk>/update/', TaskUpdateView.as_view(), name='tasks_update'),
-    
+
     # Delete a task (author only)
     path('<int:pk>/delete/', TaskDeleteView.as_view(), name='tasks_delete'),
 ]

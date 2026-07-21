@@ -13,7 +13,7 @@ from django.utils.translation import gettext_lazy as _
 class Status(models.Model):
     """
     Model representing a task status (e.g., 'New', 'In Progress', 'Done').
-    
+
     Statuses define the workflow states that tasks can transition through.
     Each status has a unique name and tracks its creation timestamp.
     Statuses are protected from deletion when associated with tasks via

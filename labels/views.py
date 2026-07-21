@@ -128,5 +128,5 @@ class LabelDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         if self.object.task_set.exists():
             messages.error(request, _('Невозможно удалить метку'))
             return redirect(self.success_url)
-        
+
         return super().post(request, *args, **kwargs)

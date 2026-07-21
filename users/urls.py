@@ -35,13 +35,13 @@ from .views import (
 urlpatterns = [
     # List all registered users
     path('', UserListView.as_view(), name='users_list'),
-    
+
     # Register a new user account
     path('create/', UserCreateView.as_view(), name='users_create'),
-    
+
     # Update an existing user's profile (self only)
     path('<int:pk>/update/', UserUpdateView.as_view(), name='users_update'),
-    
+
     # Delete a user account (self only, blocked if referenced by tasks)
     path('<int:pk>/delete/', UserDeleteView.as_view(), name='users_delete'),
 ]

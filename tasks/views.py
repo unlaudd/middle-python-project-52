@@ -13,25 +13,25 @@ from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
 
 from .models import Task
-from .filters import TaskFilter 
+from .filters import TaskFilter
 from .forms import TaskForm
 
 
 class TaskListView(LoginRequiredMixin, FilterView):
     """
     Display a filtered list of tasks.
-    
+
     This view combines Django's FilterView with LoginRequiredMixin to provide
     authenticated users with a filterable task list. Tasks can be filtered by
     status, assignee, labels, and ownership using the TaskFilter filterset.
-    
+
     Permissions:
         Requires user authentication (LoginRequiredMixin).
-    
+
     Context:
         tasks (QuerySet[Task]): Filtered task objects based on GET parameters.
         filter (TaskFilter): Filter instance for rendering the filter form.
-    
+
     Returns:
         HttpResponse: Renders 'tasks/list.html' with the filtered task list
             and filter form.
@@ -45,16 +45,16 @@ class TaskListView(LoginRequiredMixin, FilterView):
 class TaskDetailView(LoginRequiredMixin, DetailView):
     """
     Display detailed information about a specific task.
-    
+
     This view shows all attributes of a single task including name, description,
     status, author, assignee, labels, and creation timestamp.
-    
+
     Permissions:
         Requires user authentication (LoginRequiredMixin).
-    
+
     Context:
         task (Task): The task object with all its attributes.
-    
+
     Returns:
         HttpResponse: Renders 'tasks/detail.html' with the task details.
     """
@@ -66,17 +66,17 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
 class TaskCreateView(LoginRequiredMixin, CreateView):
     """
     Create a new task.
-    
+
     This view handles task creation through a form. The currently authenticated
     user is automatically set as the task author upon successful form submission.
     A success message is displayed after creation.
-    
+
     Permissions:
         Requires user authentication (LoginRequiredMixin).
-    
+
     Context:
         form (TaskForm): The task creation form instance.
-    
+
     Returns:
         HttpResponse: Renders 'tasks/create.html' on GET request.
         HttpResponseRedirect: Redirects to tasks list on successful POST
@@ -97,7 +97,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         
         Args:
             form (TaskForm): The validated form instance.
-        
+
         Returns:
             HttpResponseRedirect: Redirect response to the tasks list page
                 after successful task creation.
@@ -110,19 +110,19 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 class TaskUpdateView(LoginRequiredMixin, UpdateView):
     """
     Update an existing task.
-    
+
     This view handles task modification through a form. All task attributes
     can be updated including name, description, status, assignee, and labels.
     A success message is displayed after successful update.
-    
+
     Permissions:
         Requires user authentication (LoginRequiredMixin).
-    
+
     Context:
         form (TaskForm): The task update form instance pre-filled with
             current task data.
         task (Task): The task object being updated.
-    
+
     Returns:
         HttpResponse: Renders 'tasks/update.html' on GET request.
         HttpResponseRedirect: Redirects to tasks list on successful POST
@@ -136,14 +136,14 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         """
         Save the updated task and display a success message.
-        
+
         This method is called when the form validation passes. It saves
         the updated task data to the database and adds a success message
         to the request.
 
         Args:
             form (TaskForm): The validated form instance with updated data.
-        
+
         Returns:
             HttpResponseRedirect: Redirect response to the tasks list page
                 after successful task update.
@@ -155,19 +155,19 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
     """
     Delete an existing task.
-    
+
     This view handles task deletion with authorization checks. Only the task
     author is permitted to delete the task. If a non-author attempts deletion,
     an error message is displayed and the user is redirected to the tasks list.
     A success message is displayed after successful deletion.
-    
+
     Permissions:
         Requires user authentication (LoginRequiredMixin).
         Only the task author can delete the task.
-    
+
     Context:
         task (Task): The task object being deleted.
-    
+
     Returns:
         HttpResponse: Renders 'tasks/delete.html' on GET request (if authorized).
         HttpResponseRedirect: Redirects to tasks list on successful POST
@@ -181,7 +181,7 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
     def dispatch(self, request, *args, **kwargs):
         """
         Check if the current user is the task author before processing the request.
-        
+
         This method intercepts the request before it reaches the view handler.
         It verifies that the authenticated user is the author of the task.
         If not, it displays an error message and redirects to the tasks list.
@@ -206,7 +206,7 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         """
         Delete the task and display a success message.
-        
+
         This method handles the POST request for task deletion. It adds
         a success message to the request before delegating to the parent
         class's post method to perform the actual deletion.

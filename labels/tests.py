@@ -23,7 +23,7 @@ class LabelCRUDTest(TestCase):
     This test class verifies that labels can be created, read, updated,
     and deleted correctly, and that labels linked to tasks cannot be deleted
     to maintain data integrity.
-    
+
     Attributes:
         client (Client): Django test client for making HTTP requests.
         user (User): Test user for authenticated operations.
@@ -52,7 +52,7 @@ class LabelCRUDTest(TestCase):
     def test_list_requires_login(self):
         """
         Test that label list view requires authentication.
-        
+
         Verifies that unauthenticated users are redirected to the login page
         when attempting to access the label list.
 

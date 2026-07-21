@@ -25,13 +25,13 @@ from .views import (
 urlpatterns = [
     # List all labels
     path('', LabelListView.as_view(), name='labels_list'),
-    
+
     # Create a new label
     path('create/', LabelCreateView.as_view(), name='labels_create'),
-    
+
     # Update an existing label (requires label ID)
     path('<int:pk>/update/', LabelUpdateView.as_view(), name='labels_update'),
-    
+
     # Delete a label (requires label ID)
     path('<int:pk>/delete/', LabelDeleteView.as_view(), name='labels_delete'),
 ]

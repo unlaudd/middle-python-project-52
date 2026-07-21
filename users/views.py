@@ -21,13 +21,13 @@ from .forms import LoginForm, UserRegistrationForm, UserUpdateForm
 class UserListView(ListView):
     """
     View for displaying a list of all users.
-    
+
     Permissions:
         Public access - no authentication required.
-    
+
     Context:
         users (QuerySet): All User objects in the database.
-    
+
     Returns:
         HttpResponse: Renders 'users/list.html' with the user list.
     """
@@ -39,16 +39,16 @@ class UserListView(ListView):
 class UserCreateView(SuccessMessageMixin, CreateView):
     """
     View for registering a new user.
-    
+
     Handles user registration with success message display.
     After successful registration, redirects to the login page.
-    
+
     Permissions:
         Public access - no authentication required.
-    
+
     Context:
         form (UserRegistrationForm): Registration form instance.
-    
+
     Returns:
         HttpResponse: Renders 'users/create.html' on GET request.
         HttpResponseRedirect: Redirects to login page on successful POST.
@@ -63,16 +63,16 @@ class UserCreateView(SuccessMessageMixin, CreateView):
 class CustomLoginView(SuccessMessageMixin, LoginView):
     """
     View for user authentication.
-    
+
     Handles user login with success message display.
     After successful login, redirects to the home page.
-    
+
     Permissions:
         Public access - no authentication required.
-    
+
     Context:
         form (LoginForm): Login form instance.
-    
+
     Returns:
         HttpResponse: Renders 'users/login.html' on GET request.
         HttpResponseRedirect: Redirects to home page on successful POST.
@@ -84,7 +84,7 @@ class CustomLoginView(SuccessMessageMixin, LoginView):
     def get_success_url(self):
         """
         Get the URL to redirect to after successful login.
-        
+
         Returns:
             str: URL for the home page.
         """
@@ -94,13 +94,13 @@ class CustomLoginView(SuccessMessageMixin, LoginView):
 class CustomLogoutView(LogoutView):
     """
     View for user logout.
-    
+
     Handles user logout and displays a logout message.
     After logout, redirects to the home page.
-    
+
     Permissions:
         Requires authentication.
-    
+
     Returns:
         HttpResponseRedirect: Redirects to home page after logout.
     """
@@ -109,10 +109,10 @@ class CustomLogoutView(LogoutView):
     def dispatch(self, request, *args, **kwargs):
         """
         Handle the logout request and add a flash message.
-        
+
         Args:
             request (HttpRequest): The HTTP request object.
-        
+
         Returns:
             HttpResponseRedirect: Redirect response after logout.
         """
@@ -123,17 +123,17 @@ class CustomLogoutView(LogoutView):
 class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     """
     View for updating a user's profile.
-    
+
     Allows users to update their own profile information including
     name, username, and optionally password.
-    
+
     Permissions:
         Requires authentication. Users can only update their own profile.
-    
+
     Context:
         form (UserUpdateForm): Update form instance.
         object (User): The user being updated.
-    
+
     Returns:
         HttpResponse: Renders 'users/update.html' on GET request.
         HttpResponseRedirect: Redirects to users list on successful POST.
@@ -147,7 +147,7 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
     def test_func(self):
         """
         Check if the current user is the owner of the profile.
-        
+
         Returns:
             bool: True if user can update this profile, False otherwise.
         """
@@ -156,11 +156,11 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
     def handle_no_permission(self):
         """
         Handle unauthorized access attempts.
-        
+
         Redirects unauthenticated users to login page.
         Shows error message for authenticated users trying to update
         another user's profile.
-        
+
         Returns:
             HttpResponseRedirect: Redirect response to appropriate page.
         """
@@ -173,16 +173,16 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
     """
     View for deleting a user account.
-    
+
     Allows users to delete their own account. Prevents deletion
     if the user is referenced by tasks (author or assignee).
-    
+
     Permissions:
         Requires authentication. Users can only delete their own account.
-    
+
     Context:
         object (User): The user being deleted.
-    
+
     Returns:
         HttpResponse: Renders 'users/delete.html' on GET request.
         HttpResponseRedirect: Redirects to users list on successful POST.
@@ -195,7 +195,7 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
     def test_func(self):
         """
         Check if the current user is the owner of the account.
-        
+
         Returns:
             bool: True if user can delete this account, False otherwise.
         """
@@ -204,11 +204,11 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
     def handle_no_permission(self):
         """
         Handle unauthorized access attempts.
-        
+
         Redirects unauthenticated users to login page.
         Shows error message for authenticated users trying to delete
         another user's account.
-        
+
         Returns:
             HttpResponseRedirect: Redirect response to appropriate page.
         """
@@ -220,17 +220,17 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
     def post(self, request, *args, **kwargs):
         """
         Handle user deletion with protection against linked tasks.
-        
+
         Checks whether the user is associated with any tasks before
         attempting deletion. If tasks exist, displays an error message
         and redirects without deleting. Otherwise, proceeds with the
         standard deletion flow.
-        
+
         Args:
             request (HttpRequest): The HTTP POST request object.
             *args: Additional positional arguments.
             **kwargs: URL keyword arguments (includes 'pk' of the user).
-        
+
         Returns:
             HttpResponseRedirect: Redirects to users list with either
                 a success or error flash message.

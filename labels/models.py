@@ -54,7 +54,7 @@ class Label(models.Model):
     def __str__(self) -> str:
         """
         Return the string representation of the label.
-        
+
         Returns:
             str: The label name.
         """

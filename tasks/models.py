@@ -17,20 +17,20 @@ from django.utils.translation import gettext_lazy as _
 class Label(models.Model):
     """
     Model representing a task label.
-    
+
     Labels are used to categorize and group tasks (e.g., 'bug', 'feature',
     'urgent'). A single label can be associated with multiple tasks through
     a many-to-many relationship defined in the Task model.
-    
+
     Attributes:
         name (CharField): The display name of the label. Must be unique
             across all labels. Maximum length is 50 characters.
-    
+
     Example:
         >>> bug_label = Label.objects.create(name='bug')
         >>> feature_label = Label.objects.create(name='feature')
         >>> task.labels.add(bug_label, feature_label)
-    
+
     Note:
         Labels are protected from deletion when associated with tasks.
         Attempting to delete a label that is linked to one or more tasks
@@ -41,7 +41,7 @@ class Label(models.Model):
     def __str__(self):
         """
         Return the string representation of the label.
-        
+
         Returns:
             str: The label name.
         """
@@ -51,11 +51,11 @@ class Label(models.Model):
 class Task(models.Model):
     """
     Model representing a task in the task management system.
-    
+
     Tasks are the primary work units that track progress through various
     statuses. Each task has a name, optional description, status, author,
     optional assignee, and can be associated with multiple labels.
-    
+
     Attributes:
         name (CharField): The task title. Must be unique across all tasks.
             Maximum length is 100 characters.
@@ -75,11 +75,11 @@ class Task(models.Model):
             can be associated with zero or more tasks.
         created_at (DateTimeField): Timestamp of when the task was created.
             Automatically set on creation and cannot be modified.
-    
+
     Example:
         >>> from django.contrib.auth.models import User
         >>> from statuses.models import Status
-        >>> 
+        >>>
         >>> status = Status.objects.get(name='New')
         >>> author = User.objects.get(username='john')
         >>> task = Task.objects.create(
@@ -90,7 +90,7 @@ class Task(models.Model):
         ... )
         >>> bug_label = Label.objects.get(name='bug')
         >>> task.labels.add(bug_label)
-    
+
     Relationships:
         - Task -> Status: Many-to-one (multiple tasks can have the same status)
         - Task -> User (author): Many-to-one (one user can author many tasks)
@@ -98,7 +98,7 @@ class Task(models.Model):
           assigned many tasks)
         - Task -> Label: Many-to-many (tasks and labels have bidirectional
           many-to-many relationship)
-    
+
     Deletion Behavior:
         - Cannot delete a Status if tasks reference it (ProtectedError)
         - Cannot delete a User if they authored tasks (ProtectedError)
@@ -114,22 +114,22 @@ class Task(models.Model):
         verbose_name=_('Status')
     )
     author = models.ForeignKey(
-        User, 
-        on_delete=models.PROTECT, 
-        related_name='authored_tasks', 
+        User,
+        on_delete=models.PROTECT,
+        related_name='authored_tasks',
         verbose_name=_('Author')
     )
     assignee = models.ForeignKey(
-        User, 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True, 
-        related_name='assigned_tasks', 
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='assigned_tasks',
         verbose_name=_('Assignee')
     )
     labels = models.ManyToManyField(
-        'labels.Label', 
-        blank=True, 
+        'labels.Label',
+        blank=True,
         verbose_name=_('Labels')
     )
     created_at = models.DateTimeField(_('Created at'), auto_now_add=True)
