@@ -54,7 +54,8 @@ class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('home')
 
     def dispatch(self, request, *args, **kwargs):
-        messages.info(request, _('Вы разлогинены'))
+        if request.user.is_authenticated:
+            messages.info(request, 'Вы разлогинены')
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -63,19 +64,18 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
     View for updating a user's profile.
     """
     model = User
-    form_class = UserUpdateForm
+    form_class = UserRegistrationForm
     template_name = 'users/update.html'
     success_url = reverse_lazy('users_list')
     success_message = _('Пользователь успешно изменен')
 
-    def test_func(self):
-        return self.request.user == self.get_object()
-
-    def handle_no_permission(self):
-        if not self.request.user.is_authenticated:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
             return redirect_to_login(self.request.get_full_path())
-        messages.error(self.request, _('У вас нет прав для изменения этого пользователя.'))
-        return redirect('users_list')
+        if request.user.pk != self.get_object().pk:
+            messages.error(request, 'У вас нет прав для изменения этого пользователя.')
+            return redirect('users_list')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -86,20 +86,21 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = 'users/delete.html'
     success_url = reverse_lazy('users_list')
 
-    def test_func(self):
-        return self.request.user == self.get_object()
-
-    def handle_no_permission(self):
-        if not self.request.user.is_authenticated:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
             return redirect_to_login(self.request.get_full_path())
-        messages.error(self.request, _('У вас нет прав для изменения этого пользователя.'))
-        return redirect('users_list')
+        if request.user.pk != self.get_object().pk:
+            messages.error(request, 'У вас нет прав для изменения этого пользователя.')
+            return redirect('users_list')
+        return super().dispatch(request, *args, **kwargs)
 
-    def delete(self, request, *args, **kwargs):
-        try:
-            response = super().delete(request, *args, **kwargs)
-            messages.success(self.request, _('Пользователь успешно удален'))
-            return response
-        except ProtectedError:
-            messages.error(self.request, _('Невозможно удалить пользователя, связанного с задачами'))
-            return redirect(self.success_url)
+    def post(self, request, *args, **kwargs):
+        user = self.get_object()
+        # Проверяем связанные задачи по related_name из твоей модели Task
+        if user.author_tasks.exists() or user.executor_tasks.exists():
+            messages.error(request, 'Невозможно удалить пользователя, потому что он используется')
+            return redirect('users_list')
+        
+        messages.success(request, 'Пользователь успешно удален')
+        return super().post(request, *args, **kwargs)
+

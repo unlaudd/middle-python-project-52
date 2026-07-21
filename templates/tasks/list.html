@@ -47,13 +47,12 @@
         {% for task in tasks %}
         <tr>
             <td>{{ task.id }}</td>
-            <td>{{ task.name }}</td>
+            <td><a href="{% url 'tasks_detail' task.id %}">{{ task.name }}</a></td>
             <td>{{ task.status.name }}</td>
             <td>{{ task.author.username }}</td>
-            <td>{{ task.assignee.username|default:"—" }}</td>
+            <td>{{ task.executor.username|default:"—" }}</td>
             <td>{{ task.created_at|date:"d.m.Y H:i" }}</td>
             <td>
-                <a href="{% url 'tasks_detail' task.id %}">{{ task.name }}</a>
                 <a href="{% url 'tasks_update' task.id %}">{% trans "Изменить" %}</a><br>
                 <a href="{% url 'tasks_delete' task.id %}">{% trans "Удалить" %}</a>
             </td>
