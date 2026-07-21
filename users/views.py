@@ -16,18 +16,12 @@ from .forms import LoginForm, UserRegistrationForm, UserUpdateForm
 
 
 class UserListView(ListView):
-    """
-    View for displaying a list of all users.
-    """
     model = User
     template_name = 'users/list.html'
     context_object_name = 'users'
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
-    """
-    View for registering a new user.
-    """
     model = User
     form_class = UserRegistrationForm
     template_name = 'users/create.html'
@@ -36,9 +30,6 @@ class UserCreateView(SuccessMessageMixin, CreateView):
 
 
 class CustomLoginView(SuccessMessageMixin, LoginView):
-    """
-    View for user authentication.
-    """
     form_class = LoginForm
     template_name = 'users/login.html'
     success_message = _('Вы залогинены')
@@ -48,59 +39,49 @@ class CustomLoginView(SuccessMessageMixin, LoginView):
 
 
 class CustomLogoutView(LogoutView):
-    """
-    View for user logout.
-    """
     next_page = reverse_lazy('home')
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            messages.info(request, 'Вы разлогинены')
+        messages.info(request, _('Вы разлогинены'))
         return super().dispatch(request, *args, **kwargs)
 
 
 class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
-    """
-    View for updating a user's profile.
-    """
     model = User
-    form_class = UserRegistrationForm
+    form_class = UserUpdateForm
     template_name = 'users/update.html'
     success_url = reverse_lazy('users_list')
-    success_message = _('Пользователь успешно изменен')
+    success_message = _('Пользователь успешно обновлен')
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
+    def test_func(self):
+        return self.request.user == self.get_object()
+
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
             return redirect_to_login(self.request.get_full_path())
-        if request.user.pk != self.get_object().pk:
-            messages.error(request, 'У вас нет прав для изменения этого пользователя.')
-            return redirect('users_list')
-        return super().dispatch(request, *args, **kwargs)
+        messages.error(self.request, _('У вас нет прав для изменения этого пользователя.'))
+        return redirect('users_list')
 
 
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    """
-    View for deleting a user account.
-    """
     model = User
     template_name = 'users/delete.html'
     success_url = reverse_lazy('users_list')
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
+    def test_func(self):
+        return self.request.user == self.get_object()
+
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
             return redirect_to_login(self.request.get_full_path())
-        if request.user.pk != self.get_object().pk:
-            messages.error(request, 'У вас нет прав для изменения этого пользователя.')
-            return redirect('users_list')
-        return super().dispatch(request, *args, **kwargs)
+        messages.error(self.request, _('У вас нет прав для изменения этого пользователя.'))
+        return redirect('users_list')
 
-    def post(self, request, *args, **kwargs):
-        user = self.get_object()
-        # Проверяем связанные задачи по related_name из твоей модели Task
-        if user.author_tasks.exists() or user.executor_tasks.exists():
-            messages.error(request, 'Невозможно удалить пользователя, потому что он используется')
-            return redirect('users_list')
-        
-        messages.success(request, 'Пользователь успешно удален')
-        return super().post(request, *args, **kwargs)
-
+    def form_valid(self, form):
+        try:
+            self.object.delete()
+            messages.success(self.request, _('Пользователь успешно удален'))
+            return redirect(self.success_url)
+        except ProtectedError:
+            messages.error(self.request, _('Невозможно удалить пользователя, связанного с задачами'))
+            return redirect(self.success_url)

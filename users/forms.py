@@ -8,9 +8,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 class UserRegistrationForm(UserCreationForm):
-    """
-    Form for registering a new user with first name, last name, and username.
-    """
     first_name = forms.CharField(label=_('Имя'), max_length=150, required=True)
     last_name = forms.CharField(label=_('Фамилия'), max_length=150, required=True)
 
@@ -26,9 +23,6 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class UserUpdateForm(forms.ModelForm):
-    """
-    Form for updating user profile information.
-    """
     first_name = forms.CharField(label=_('Имя'), max_length=150, required=True)
     last_name = forms.CharField(label=_('Фамилия'), max_length=150, required=True)
     username = forms.CharField(label=_('Имя пользователя'), max_length=150, required=True)
@@ -58,9 +52,6 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class LoginForm(AuthenticationForm):
-    """
-    Form for user authentication.
-    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].label = _('Имя пользователя')
