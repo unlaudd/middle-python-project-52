@@ -51,7 +51,7 @@ class CustomUserAdmin(UserAdmin):
         The default UserAdmin is unregistered before this class is registered
         to prevent duplicate admin registrations for the User model.
     """
-    list_display = ('id', 'username', 'first_name', 'last_name', 'email', 'is_staff', 'date_joined')
+    list_display = ('id', 'username', 'first_name', 'last_name', 'email', 'is_staff', 'date_joined')  # noqa: E501
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'date_joined')
     search_fields = ('username', 'first_name', 'last_name', 'email')
     ordering = ('-date_joined',)

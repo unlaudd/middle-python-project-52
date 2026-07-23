@@ -34,7 +34,8 @@ class UserRegistrationForm(UserCreationForm):
         last_name (CharField): User's last name. Required, max 150 characters.
         username (CharField): Unique username. Inherited from UserCreationForm.
         password1 (CharField): Password. Inherited from UserCreationForm.
-        password2 (CharField): Password confirmation. Inherited from UserCreationForm.
+        password2 (CharField): Password confirmation. 
+                               Inherited from UserCreationForm.
 
     Permissions:
         Public access - no authentication required. Any visitor can register.
@@ -49,7 +50,7 @@ class UserRegistrationForm(UserCreationForm):
         for consistency with the rest of the application's interface.
     """
     first_name = forms.CharField(label=_('Имя'), max_length=150, required=True)
-    last_name = forms.CharField(label=_('Фамилия'), max_length=150, required=True)
+    last_name = forms.CharField(label=_('Фамилия'), max_length=150, required=True)  # noqa: E501
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -85,8 +86,10 @@ class UserUpdateForm(forms.ModelForm):
         first_name (CharField): User's first name. Required, max 150 characters.
         last_name (CharField): User's last name. Required, max 150 characters.
         username (CharField): Unique username. Required, max 150 characters.
-        password1 (CharField): New password. Optional, rendered as PasswordInput.
-        password2 (CharField): Password confirmation. Optional, rendered as PasswordInput.
+        password1 (CharField): New password. Optional, rendered 
+                               as PasswordInput.
+        password2 (CharField): Password confirmation. Optional, 
+                               rendered as PasswordInput.
 
     Permissions:
         Requires authentication. Users can only update their own profile.
@@ -103,8 +106,8 @@ class UserUpdateForm(forms.ModelForm):
         to ensure proper hashing. Otherwise, only profile fields are saved.
     """
     first_name = forms.CharField(label=_('Имя'), max_length=150, required=True)
-    last_name = forms.CharField(label=_('Фамилия'), max_length=150, required=True)
-    username = forms.CharField(label=_('Имя пользователя'), max_length=150, required=True)
+    last_name = forms.CharField(label=_('Фамилия'), max_length=150, required=True)  # noqa: E501
+    username = forms.CharField(label=_('Имя пользователя'), max_length=150, required=True)  # noqa: E501
     password1 = forms.CharField(
         label=_('Пароль'),
         widget=forms.PasswordInput,
@@ -118,19 +121,22 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'password1', 'password2')  # noqa: E501
 
     def save(self, commit=True):
         """
-        Save the user with updated profile information and optional password change.
+        Save the user with updated profile information and optional 
+        password change.
 
-        If password1 is provided in the form data, the user's password is updated
-        using set_password() to ensure proper hashing. Otherwise, only the profile
-        fields (username, first_name, last_name) are saved.
+        If password1 is provided in the form data, the user's password 
+        is updated using set_password() to ensure proper hashing. 
+        Otherwise, only the profile fields (username, first_name, last_name) 
+        are saved.
 
         Args:
             commit (bool): Whether to save the user to the database immediately.
-                Defaults to True. If False, the unsaved User instance is returned.
+                Defaults to True. 
+                If False, the unsaved User instance is returned.
 
         Returns:
             User: The updated User instance, either saved to the database or

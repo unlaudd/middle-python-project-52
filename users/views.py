@@ -119,7 +119,7 @@ class CustomLogoutView(LogoutView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
+class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):  # noqa: E501
     """
     View for updating a user's profile.
 
@@ -165,11 +165,11 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
         """
         if not self.request.user.is_authenticated:
             return redirect_to_login(self.request.get_full_path())
-        messages.error(self.request, _('У вас нет прав для изменения этого пользователя.'))
+        messages.error(self.request, _('У вас нет прав для изменения этого пользователя.'))  # noqa: E501
         return redirect('users_list')
 
 
-class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):
+class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DeleteView):  # noqa: E501
     """
     View for deleting a user account.
 
@@ -213,7 +213,7 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
         """
         if not self.request.user.is_authenticated:
             return redirect_to_login(self.request.get_full_path())
-        messages.error(self.request, _('У вас нет прав для изменения этого пользователя.'))
+        messages.error(self.request, _('У вас нет прав для изменения этого пользователя.'))  # noqa: E501
         return redirect('users_list')
 
     def post(self, request, *args, **kwargs):
@@ -235,7 +235,7 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
                 a success or error flash message.
         """
         self.object = self.get_object()
-        if self.object.authored_tasks.exists() or self.object.assigned_tasks.exists():
-            messages.error(self.request, _('Невозможно удалить пользователя, связанного с задачами'))
+        if self.object.authored_tasks.exists() or self.object.assigned_tasks.exists():  # noqa: E501
+            messages.error(self.request, _('Невозможно удалить пользователя, связанного с задачами'))  # noqa: E501
             return redirect(self.success_url)
         return super().post(request, *args, **kwargs)

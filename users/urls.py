@@ -14,7 +14,8 @@ Permissions:
     - Listing: Public access (no authentication required).
     - Creation: Public access (any visitor can register).
     - Update: Requires authentication. Users can only update their own profile.
-    - Deletion: Requires authentication. Users can only delete their own account.
+    - Deletion: Requires authentication. Users can only delete their own 
+                account.
         Deletion is blocked if the user is referenced by any tasks (author or
         assignee) to preserve data integrity.
 

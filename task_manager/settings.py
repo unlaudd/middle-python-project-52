@@ -78,7 +78,7 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},  # noqa: E501
 ]
 
 # Internationalization
@@ -123,7 +123,7 @@ ROLLBAR_ACCESS_TOKEN = os.getenv('ROLLBAR_ACCESS_TOKEN')
 if ROLLBAR_ACCESS_TOKEN:
     ROLLBAR = {
         'access_token': ROLLBAR_ACCESS_TOKEN,
-        'environment': os.getenv('ROLLBAR_ENVIRONMENT', 'development' if DEBUG else 'production'),
+        'environment': os.getenv('ROLLBAR_ENVIRONMENT', 'development' if DEBUG else 'production'),  # noqa: E501
         'root': BASE_DIR,
     }
     rollbar.init(**ROLLBAR)

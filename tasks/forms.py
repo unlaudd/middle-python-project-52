@@ -79,7 +79,8 @@ class TaskForm(forms.ModelForm):
     Validation:
         - The 'name' field must be unique across all tasks. A duplicate name
           triggers the custom error message defined in Meta.error_messages.
-        - The 'executor' field is optional; a task may exist without an assignee.
+        - The 'executor' field is optional; a task may exist without an 
+          assignee.
         - The 'labels' field accepts zero or more labels.
 
     Usage:
@@ -97,7 +98,7 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ['name', 'description', 'status', 'executor', 'labels']
         widgets = {
-            'labels': forms.SelectMultiple(attrs={'class': 'form-select', 'size': '5'}),
+            'labels': forms.SelectMultiple(attrs={'class': 'form-select', 'size': '5'}),  # noqa: E501
         }
         labels = {
             'name': 'Имя',

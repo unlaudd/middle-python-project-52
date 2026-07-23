@@ -68,7 +68,8 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     Create a new task.
 
     This view handles task creation through a form. The currently authenticated
-    user is automatically set as the task author upon successful form submission.
+    user is automatically set as the task author upon successful
+    form submission.
     A success message is displayed after creation.
 
     Permissions:
@@ -169,7 +170,8 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
         task (Task): The task object being deleted.
 
     Returns:
-        HttpResponse: Renders 'tasks/delete.html' on GET request (if authorized).
+        HttpResponse: Renders 'tasks/delete.html' on GET request 
+                      (if authorized).
         HttpResponseRedirect: Redirects to tasks list on successful POST
             with a success flash message, or with an error message if
             the user is not the task author.
@@ -180,7 +182,8 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         """
-        Check if the current user is the task author before processing the request.
+        Check if the current user is the task author before processing 
+        the request.
 
         This method intercepts the request before it reaches the view handler.
         It verifies that the authenticated user is the author of the task.
