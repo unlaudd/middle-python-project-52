@@ -18,5 +18,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "flake8>=7.3.0",
+    "ruff>=0.9.0",
+    "coverage>=7.6.0",
 ]

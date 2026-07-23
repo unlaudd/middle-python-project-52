@@ -6,8 +6,8 @@
 PYTHON := uv run python
 MANAGE := $(PYTHON) manage.py
 
-# Phony targets (prevent conflicts with files of the same name)
-.PHONY: help install build migrate makemigrations collectstatic compilemessages start test render-start
+# Phony targets
+.PHONY: help install build migrate makemigrations collectstatic compilemessages start test test-coverage render-start
 
 help: ## Show this help message
 	@echo "Available commands:"
@@ -36,6 +36,10 @@ start: ## Run the local development server
 
 test: ## Run the Django test suite
 	$(MANAGE) test
+
+test-coverage: ## Run tests with coverage and generate coverage.xml for SonarQube
+	uv run coverage run manage.py test
+	uv run coverage xml
 
 render-start: ## Start the application with Gunicorn (for Render/Production)
 	gunicorn task_manager.wsgi:application

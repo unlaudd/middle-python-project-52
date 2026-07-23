@@ -17,18 +17,21 @@ jobs:
         with:
           python-version: '3.12'
       
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install flake8
+      - name: Install uv
+        run: pip install uv
       
-      - name: Run flake8
-        run: flake8 .
+      - name: Install dependencies
+        run: uv sync
+      
+      - name: Run ruff
+        run: uv run ruff check .
 
-  test:
+  test-and-coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Обязательно для SonarQube (нужна история коммитов)
       
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -41,8 +44,13 @@ jobs:
       - name: Install dependencies
         run: uv sync
       
-      - name: Run tests
+      - name: Run tests with coverage
         env:
           SECRET_KEY: test-secret-key
           DEBUG: 'True'
-        run: uv run python manage.py test
+        run: make test-coverage
+      
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
