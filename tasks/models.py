@@ -9,8 +9,8 @@ This module defines the core models for task management:
 These models implement the business logic for task tracking, including
 protection rules that prevent deletion of referenced entities.
 """
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 

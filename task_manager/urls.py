@@ -17,8 +17,9 @@ URL Patterns:
 from django.contrib import admin
 from django.urls import include, path
 
-from .views import HomeView
 from users.views import CustomLoginView, CustomLogoutView
+
+from .views import HomeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
